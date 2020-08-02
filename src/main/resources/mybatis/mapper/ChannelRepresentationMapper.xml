@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.lefer.tomu.channel.representation.ChannelRepresentationMapper">
+    <resultMap id="ChannelRepresentationResultMap" type="cn.lefer.tomu.channel.representation.ChannelRepresentation">
+        <id column="channel_id" jdbcType="INTEGER" property="channelID"/>
+        <result column="channel_name" jdbcType="VARCHAR" property="channelName"/>
+        <result column="channel_crt_date" jdbcType="DATE" property="channelCreateDate"/>
+        <result column="song_id" jdbcType="INTEGER" property="lastSongID"/>
+        <result column="last_position" jdbcType="DOUBLE" property="lastPosition"/>
+        <result column="play_date" jdbcType="DATE" property="lastPlayDate"/>
+    </resultMap>
+    <resultMap id="PlaylistItemRepresentationResultMap"
+               type="cn.lefer.tomu.channel.representation.PlaylistItemRepresentation">
+        <id column="channel_id" jdbcType="INTEGER" property="channelID"/>
+        <result column="song_id" jdbcType="INTEGER" property="lastSongID"/>
+        <result column="song_url" jdbcType="VARCHAR" property="songUrl"/>
+        <result column="song_name" jdbcType="VARCHAR" property="songName"/>
+        <result column="artist_name" jdbcType="VARCHAR" property="artistName"/>
+        <result column="cover_url" jdbcType="VARCHAR" property="coverUrl"/>
+        <result column="lrc_url" jdbcType="VARCHAR" property="lrcUrl"/>
+        <result column="mp3_url" jdbcType="VARCHAR" property="mp3Url"/>
+        <result column="add_date" jdbcType="DATE" property="createDate"/>
+    </resultMap>
+
+    <select id="queryChannelByChannelID" resultMap="ChannelRepresentationResultMap">
+        select a.CHANNEL_ID, a.CHANNEL_NAME, a.CHANNEL_CRT_DATE, b.SONG_ID, b.LAST_POSITION, b.PLAY_DATE
+        from (select CHANNEL_ID, CHANNEL_CRT_DATE, CHANNEL_NAME
+              from T_CHANNEL
+              where CHANNEL_ID = #{channelID}) a
+                 left join
+             (select CHANNEL_ID, SONG_ID, PLAY_DATE, LAST_POSITION
+              from T_PLAY_HISTORY
+              where CHANNEL_ID = #{channelID}
+              order by PLAY_HISTORY_ID desc
+              limit 1) b
+             on a.CHANNEL_ID = b.CHANNEL_ID
+    </select>
+    <select id="queryPlaylistByChannelID" resultMap="PlaylistItemRepresentationResultMap">
+        select TP.CHANNEL_ID,
+               TP.SONG_ID,
+               TS.SONG_URL,
+               TS.SONG_NAME,
+               TS.ARTIST_NAME,
+               TS.COVER_URL,
+               TS.LRC_URL,
+               TS.MP3_URL,
+               TP.ADD_DATE
+        from T_PLAYLIST TP,
+             T_SONG TS
+        where TP.CHANNEL_ID = #{channelID}
+          and TP.SONG_ID = TS.SONG_ID
+          and TP.PLAYLIST_ITEM_STATUS = 1
+          and TS.SONG_STATUS = 1
+        order by TP.PLAYLIST_ID desc
+    </select>
+</mapper>

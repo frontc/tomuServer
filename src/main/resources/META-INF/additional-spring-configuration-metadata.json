@@ -1,0 +1,18 @@
+{
+  "properties": [
+    {
+      "name": "tomu.server.version",
+      "type": "java.lang.String",
+      "description": "Description for tomu.server.version."
+    },
+    {
+      "name": "tomu.server.name",
+      "type": "java.lang.String",
+      "description": "Description for tomu.server.name."
+    },
+    {
+      "name": "tomu.server.slogan",
+      "type": "java.lang.String",
+      "description": "Description for tomu.server.slogan."
+    }
+  ] }

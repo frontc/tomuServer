@@ -14,7 +14,6 @@ public class Channel {
     int channelOwnerID;
     String channelKey;
     Date channelCreateDate;
-    double position;
     /*
     * the use case of channel:
     * 1. create
@@ -27,5 +26,4 @@ public class Channel {
         return Channel.builder().channelCreateDate(LeferDate.today())
                 .build();
     }
-
 }

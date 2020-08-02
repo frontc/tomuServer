@@ -1,0 +1,18 @@
+package cn.lefer.tomu.channel.representation;
+
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
+
+/**
+ * @author : lefer
+ * @version : V1.0
+ * @date :   2020/6/24
+ * @Description : channel mapper
+ */
+@Mapper
+public interface ChannelRepresentationMapper {
+    ChannelRepresentation queryChannelByChannelID(@Param("channelID") int channelID);
+    List<PlaylistItemRepresentation> queryPlaylistByChannelID(@Param("channelID") int channelID);
+}

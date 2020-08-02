@@ -1,0 +1,3 @@
+${AnsiColor.MAGENTA}
+${tomu.server.name} v${tomu.server.version} ${tomu.server.slogan}
+${AnsiColor.BLACK}

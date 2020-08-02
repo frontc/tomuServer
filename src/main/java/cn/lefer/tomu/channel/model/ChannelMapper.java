@@ -1,9 +1,8 @@
-package cn.lefer.tomu.channel.repository;
+package cn.lefer.tomu.channel.model;
 
-import cn.lefer.tomu.entity.Channel;
+import cn.lefer.tomu.channel.model.Channel;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Repository;
 
 /**
  * @author : lefer
@@ -11,9 +10,8 @@ import org.springframework.stereotype.Repository;
  * @date :   2020/6/24
  * @Description : channel mapper
  */
-@Repository
 @Mapper
 public interface ChannelMapper {
     int insert(Channel channel);
-    Channel selectByID(@Param("channelID") int channelID);
+    Channel byID(@Param("channelID") int channelID);
 }
