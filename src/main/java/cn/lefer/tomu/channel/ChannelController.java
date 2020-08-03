@@ -82,7 +82,9 @@ public class ChannelController {
     }
 
     //TODO:频道下删除歌曲
-    public void removeSongFromChannel() {
+    @DeleteMapping(value = "/{channelID}/song/{songID}")
+    public void removeSongFromChannel(@PathVariable("channelID") String channelID, @PathVariable("songID") String songID) {
+        channelApplicationService.deletePlaylistItem(channelID,songID);
     }
 
     //TODO:上报频道状态变化

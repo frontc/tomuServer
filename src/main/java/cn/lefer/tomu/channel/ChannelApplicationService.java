@@ -37,4 +37,7 @@ public class ChannelApplicationService {
         log.info("Create PlaylistItem:"+playlistItemID+" (Song: "+ songID+" Channel: "+channelID+")");
         return channelRepository.addPlaylistItem(playlistItem);
     }
+
+    public void deletePlaylistItem(String channelID, String songID) {
+    }
 }
