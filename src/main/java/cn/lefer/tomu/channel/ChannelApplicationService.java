@@ -33,6 +33,8 @@ public class ChannelApplicationService {
         Channel channel = channelRepository.byID(channelID);
         if(channel==null) throw new ChannelNotExistException();
         PlaylistItem playlistItem = channel.createPlaylistItem(channelID,songID);
+        long playlistItemID = channelRepository.addPlaylistItem(playlistItem);
+        log.info("Create PlaylistItem:"+playlistItemID+" (Song: "+ songID+" Channel: "+channelID+")");
         return channelRepository.addPlaylistItem(playlistItem);
     }
 }
