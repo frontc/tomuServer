@@ -2,15 +2,15 @@ package cn.lefer.tomu.song;
 
 import cn.lefer.tomu.base.constant.SongSource;
 import cn.lefer.tomu.base.constant.SongStatus;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Date;
 
 @Builder
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Song {
     /*
      * the use case of song:

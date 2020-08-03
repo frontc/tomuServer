@@ -23,13 +23,13 @@
     </insert>
 
     <select id="byID" resultMap="SongResultMap">
-        select *
+        select song_id, song_name, song_duration, artist_name, song_source, song_url, mp3_url, cover_url, lrc_url, song_status, song_add_date
         from T_SONG
         where SONG_ID = #{songID}
     </select>
 
     <select id="bySongNameAndArtistNameOrMP3Url" resultMap="SongResultMap">
-        select *
+        select song_id, song_name, song_duration, artist_name, song_source, song_url, mp3_url, cover_url, lrc_url, song_status, song_add_date
         from T_SONG
         where (SONG_NAME = #{songName} and ARTIST_NAME = #{artistName}) or MP3_URL = #{mp3Url}
         limit 1

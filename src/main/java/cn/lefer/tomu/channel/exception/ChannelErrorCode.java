@@ -9,6 +9,7 @@ package cn.lefer.tomu.channel.exception;
 
 public enum ChannelErrorCode {
     CHANNEL_NOT_EXIST("4001", 400),
+    PLAYLIST_ITEM_ALREADY_EXIST("4090",409),
     SONG_VERIFY_FAILED("4061",406),
     SONG_CANNOT_REACHABLE("4060",406);
 

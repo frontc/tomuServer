@@ -1,8 +1,7 @@
 package cn.lefer.tomu.channel.model;
 
 import cn.lefer.tomu.base.constant.PlaylistItemStatus;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Date;
 
@@ -12,10 +11,12 @@ import java.util.Date;
  * @date :   2020/8/2
  * @Description : 歌单
  */
-@Getter
-@Setter
-public class Playlist {
-    private long playlistID;
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class PlaylistItem {
+    private long playlistItemID;
     int channelID;
     int songID;
     Date addDate;

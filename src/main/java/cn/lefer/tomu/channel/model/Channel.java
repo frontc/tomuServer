@@ -1,13 +1,15 @@
 package cn.lefer.tomu.channel.model;
 
+import cn.lefer.tomu.base.constant.PlaylistItemStatus;
 import cn.lefer.tools.Date.LeferDate;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 
 import java.util.Date;
 
-@Getter
+@Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Channel {
     int channelID;
     String channelName;
@@ -25,5 +27,9 @@ public class Channel {
     public static Channel create(){
         return Channel.builder().channelCreateDate(LeferDate.today())
                 .build();
+    }
+
+    public PlaylistItem createPlaylistItem(int channelID, int songID) {
+        return PlaylistItem.builder().channelID(channelID).songID(songID).addDate(LeferDate.today()).playlistItemStatus(PlaylistItemStatus.NORMAL).build();
     }
 }

@@ -1,6 +1,6 @@
 package cn.lefer.tomu.channel.model;
 
-import cn.lefer.tomu.channel.model.Channel;
+import cn.lefer.tomu.base.constant.PlaylistItemStatus;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -12,6 +12,12 @@ import org.apache.ibatis.annotations.Param;
  */
 @Mapper
 public interface ChannelMapper {
-    int insert(Channel channel);
+    void insert(Channel channel);
     Channel byID(@Param("channelID") int channelID);
+
+    void insertPlaylistItem(PlaylistItem playlistItem);
+
+    PlaylistItem selectNormalPlaylistItemByChannelIDAndSongID(@Param("channelID") int channelID,
+                                                              @Param("songID") int songID,
+                                                              @Param("playlistItemStatus") PlaylistItemStatus playlistItemStatus);
 }

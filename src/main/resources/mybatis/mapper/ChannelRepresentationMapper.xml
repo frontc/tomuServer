@@ -11,8 +11,9 @@
     </resultMap>
     <resultMap id="PlaylistItemRepresentationResultMap"
                type="cn.lefer.tomu.channel.representation.PlaylistItemRepresentation">
-        <id column="channel_id" jdbcType="INTEGER" property="channelID"/>
-        <result column="song_id" jdbcType="INTEGER" property="lastSongID"/>
+        <id column="playlist_item_id" jdbcType="BIGINT" property="playlistItemID"/>
+        <result column="channel_id" jdbcType="INTEGER" property="channelID"/>
+        <result column="song_id" jdbcType="INTEGER" property="songID"/>
         <result column="song_url" jdbcType="VARCHAR" property="songUrl"/>
         <result column="song_name" jdbcType="VARCHAR" property="songName"/>
         <result column="artist_name" jdbcType="VARCHAR" property="artistName"/>
@@ -35,8 +36,9 @@
               limit 1) b
              on a.CHANNEL_ID = b.CHANNEL_ID
     </select>
-    <select id="queryPlaylistByChannelID" resultMap="PlaylistItemRepresentationResultMap">
-        select TP.CHANNEL_ID,
+    <select id="queryNormalPlaylistByChannelID" resultMap="PlaylistItemRepresentationResultMap">
+        select TP.PLAYLIST_ITEM_ID,
+               TP.CHANNEL_ID,
                TP.SONG_ID,
                TS.SONG_URL,
                TS.SONG_NAME,
@@ -49,8 +51,23 @@
              T_SONG TS
         where TP.CHANNEL_ID = #{channelID}
           and TP.SONG_ID = TS.SONG_ID
-          and TP.PLAYLIST_ITEM_STATUS = 1
-          and TS.SONG_STATUS = 1
-        order by TP.PLAYLIST_ID desc
+          and TP.PLAYLIST_ITEM_STATUS = #{playlistItemStatus}
+          and TS.SONG_STATUS = #{songStatus}
+        order by TP.PLAYLIST_ITEM_ID desc
+    </select>
+    <select id="queryPlaylistItemByID" resultMap="PlaylistItemRepresentationResultMap">
+        select TP.PLAYLIST_ITEM_ID,
+               TP.CHANNEL_ID,
+               TP.SONG_ID,
+               TS.SONG_URL,
+               TS.SONG_NAME,
+               TS.ARTIST_NAME,
+               TS.COVER_URL,
+               TS.LRC_URL,
+               TS.MP3_URL,
+               TP.ADD_DATE
+        from T_PLAYLIST TP
+                 LEFT JOIN T_SONG TS ON TP.SONG_ID = TS.SONG_ID
+        where TP.PLAYLIST_ITEM_ID = #{playlistItemID}
     </select>
 </mapper>

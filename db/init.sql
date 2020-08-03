@@ -28,7 +28,7 @@ create table t_song
 drop table if exists t_playlist;
 create table t_playlist
 (
-    playlist_id  bigint IDENTITY primary key,
+    playlist_item_id  bigint IDENTITY primary key,
     channel_id int,
     song_id int,
     add_date datetime,

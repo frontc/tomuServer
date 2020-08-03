@@ -21,4 +21,8 @@ public class ChannelRepresentationService {
     public ChannelRepresentation getChannel(int channelID) {
         return representationRepository.get(channelID);
     }
+
+    public PlaylistItemRepresentation getPlaylistItemByID(long playlistItemID) {
+        return representationRepository.getPlaylistItemByID(playlistItemID);
+    }
 }

@@ -1,9 +1,7 @@
 package cn.lefer.tomu.channel.representation;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,8 +13,9 @@ import java.util.List;
  * @date :   2020/8/2
  * @Description : 频道信息
  */
-@Setter
-@Getter
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @ToString
 public class ChannelRepresentation {
     int channelID;

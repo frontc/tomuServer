@@ -1,10 +1,10 @@
 package cn.lefer.tomu.channel;
 
-import cn.lefer.tomu.channel.command.AddSongCommand;
 import cn.lefer.tomu.channel.exception.ChannelNotExistException;
 import cn.lefer.tomu.channel.model.Channel;
 import cn.lefer.tomu.channel.model.ChannelFactory;
 import cn.lefer.tomu.channel.model.ChannelRepository;
+import cn.lefer.tomu.channel.model.PlaylistItem;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,12 +29,10 @@ public class ChannelApplicationService {
         return channelID;
     }
 
-    public long addSongToChannel(int channelID, AddSongCommand command) {
-
+    public long addPlaylistItem(int channelID, int songID) {
         Channel channel = channelRepository.byID(channelID);
         if(channel==null) throw new ChannelNotExistException();
-
-
-
+        PlaylistItem playlistItem = channel.createPlaylistItem(channelID,songID);
+        return channelRepository.addPlaylistItem(playlistItem);
     }
 }

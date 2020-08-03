@@ -5,6 +5,7 @@ import cn.lefer.tomu.channel.command.AddSongCommand;
 import cn.lefer.tomu.channel.representation.ChannelRepresentation;
 import cn.lefer.tomu.channel.representation.ChannelRepresentationService;
 import cn.lefer.tomu.channel.representation.PlaylistItemRepresentation;
+import cn.lefer.tomu.song.SongApplicationService;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -16,9 +17,11 @@ import javax.annotation.Resource;
 @RequestMapping(value = "/api/v1/channel")
 public class ChannelController {
     @Resource
-    private ChannelApplicationService applicationService;
+    private ChannelApplicationService channelApplicationService;
     @Resource
-    private ChannelRepresentationService representationService;
+    private ChannelRepresentationService channelRepresentationService;
+    @Resource
+    private SongApplicationService songApplicationService;
 
     /**
      * Create a channel
@@ -27,7 +30,7 @@ public class ChannelController {
      */
     @PostMapping(value = "")
     public Mono<Integer> createChannel() {
-        return Mono.just(applicationService.createChannel());
+        return Mono.just(channelApplicationService.createChannel());
     }
 
     /**
@@ -37,7 +40,7 @@ public class ChannelController {
      */
     @GetMapping(value = "/{channelID}")
     public Mono<ChannelRepresentation> getChannel(@PathVariable("channelID") @Validated int channelID) {
-        return Mono.just(representationService.getChannel(channelID));
+        return Mono.just(channelRepresentationService.getChannel(channelID));
     }
 
     //TODO:分页获取频道歌单
@@ -50,6 +53,7 @@ public class ChannelController {
 
     /**
      * add a song to a channel
+     *
      * @param addSongCommand the info of a song
      * @return PlaylistItemRepresentation.
      */
@@ -57,10 +61,17 @@ public class ChannelController {
     public Mono<PlaylistItemRepresentation> addSongToChannel(@PathVariable("channelID") @Validated int channelID,
                                                              @Validated AddSongCommand addSongCommand) {
         //1.添加歌曲
+        int songID = songApplicationService.save(addSongCommand.getSongName(),
+                addSongCommand.getArtistName(),
+                addSongCommand.getSongSource(),
+                addSongCommand.getSongUrl(),
+                addSongCommand.getMp3Url(),
+                addSongCommand.getCoverUrl(),
+                addSongCommand.getLrcUrl());
         //2.添加到歌单
+        long playlistItemID = channelApplicationService.addPlaylistItem(channelID,songID);
         //3.返回歌单项目
-        applicationService.addSongToChannel(channelID,addSongCommand);
-        return Mono.just(null);
+        return Mono.just(channelRepresentationService.getPlaylistItemByID(playlistItemID));
     }
 
     //TODO:频道下删除歌曲

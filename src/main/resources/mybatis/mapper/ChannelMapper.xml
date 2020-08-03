@@ -1,12 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.lefer.tomu.channel.model.ChannelMapper">
-    <resultMap id="ChannelResultMap" type="cn.lefer.tomu.entity.Channel">
+    <resultMap id="ChannelResultMap" type="cn.lefer.tomu.channel.model.Channel">
         <id column="channel_id" jdbcType="INTEGER" property="channelID"/>
         <result column="channel_name" jdbcType="VARCHAR" property="channelName"/>
         <result column="channel_owner_id" jdbcType="INTEGER" property="channelOwnerID"/>
         <result column="channel_key" jdbcType="VARCHAR" property="channelKey"/>
         <result column="channel_crt_date" jdbcType="DATE" property="channelCreateDate"/>
+    </resultMap>
+    <resultMap id="playlistItemResultMap" type="cn.lefer.tomu.channel.model.PlaylistItem">
+        <id column="playlist_item_id" jdbcType="BIGINT" property="playlistItemID"/>
+        <result column="channel_id" jdbcType="INTEGER" property="channelID"/>
+        <result column="song_id" jdbcType="INTEGER" property="songID"/>
+        <result column="add_date" jdbcType="DATE" property="addDate"/>
+        <result column="playlist_item_status" jdbcType="VARCHAR" property="playlistItemStatus"/>
     </resultMap>
     <insert id="insert" parameterType="cn.lefer.tomu.channel.model.Channel" useGeneratedKeys="true"
             keyProperty="channelID">
@@ -15,8 +22,21 @@
     </insert>
 
     <select id="byID" resultMap="ChannelResultMap">
-        select *
+        select channel_id, channel_name, channel_owner_id, channel_key, channel_crt_date
         from T_CHANNEL
         where CHANNEL_ID = #{channelID}
     </select>
+
+    <select id="selectNormalPlaylistItemByChannelIDAndSongID" resultMap="playlistItemResultMap">
+        select playlist_item_id, channel_id, song_id, add_date, playlist_item_status
+        from T_PLAYLIST
+        where CHANNEL_ID = #{channelID} and SONG_ID=#{songID} and PLAYLIST_ITEM_STATUS=#{playlistItemStatus}
+        limit 1
+    </select>
+
+    <insert id="insertPlaylistItem" parameterType="cn.lefer.tomu.channel.model.PlaylistItem" useGeneratedKeys="true"
+            keyProperty="playlistItemID">
+        insert into T_PLAYLIST(channel_id, song_id, add_date, playlist_item_status)
+        values (#{channelID}, #{songID}, #{addDate}, #{playlistItemStatus})
+    </insert>
 </mapper>
