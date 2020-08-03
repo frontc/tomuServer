@@ -9,6 +9,7 @@ import cn.lefer.tomu.channel.model.ChannelMapper;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Repository
 public class ChannelRepresentationRepository {
@@ -27,5 +28,9 @@ public class ChannelRepresentationRepository {
 
     public PlaylistItemRepresentation getPlaylistItemByID(long playlistItemID) {
         return channelRepresentationMapper.queryPlaylistItemByID(playlistItemID);
+    }
+
+    public List<PlaylistItemRepresentation> getPlaylistByChannelID(int channelID) {
+        return channelRepresentationMapper.queryNormalPlaylistByChannelID(channelID,PlaylistItemStatus.NORMAL,SongStatus.NORMAL);
     }
 }

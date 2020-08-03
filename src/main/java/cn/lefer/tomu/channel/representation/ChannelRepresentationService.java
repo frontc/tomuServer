@@ -3,6 +3,9 @@ package cn.lefer.tomu.channel.representation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Collection;
+import java.util.List;
+
 /**
  * @author : lefer
  * @version : V1.0
@@ -24,5 +27,9 @@ public class ChannelRepresentationService {
 
     public PlaylistItemRepresentation getPlaylistItemByID(long playlistItemID) {
         return representationRepository.getPlaylistItemByID(playlistItemID);
+    }
+
+    public List<PlaylistItemRepresentation> getPlaylist(int channelID) {
+        return representationRepository.getPlaylistByChannelID(channelID);
     }
 }

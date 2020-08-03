@@ -9,6 +9,7 @@ import cn.lefer.tomu.song.SongApplicationService;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import javax.annotation.Resource;
@@ -47,8 +48,14 @@ public class ChannelController {
     public void getSongsByPageInChannel() {
     }
 
-    //TODO:获取频道下所有歌单
-    public void getSongsInChannel() {
+    /**
+     * get channel's playlist
+     *
+     * @return Flux<PlaylistItemRepresentation>. the channel's playlist
+     */
+    @GetMapping(value = "/{channelID}/songs/all")
+    public Flux<PlaylistItemRepresentation> getSongsInChannel(@PathVariable("channelID") int channelID) {
+        return Flux.fromStream(channelRepresentationService.getPlaylist(channelID).stream());
     }
 
     /**
