@@ -2,7 +2,6 @@ package cn.lefer.tomu.song.exception;
 
 import cn.lefer.tomu.base.exception.BaseException;
 import cn.lefer.tomu.base.exception.ErrorResponse;
-import cn.lefer.tomu.channel.exception.ChannelErrorCode;
 
 /**
  * @author : lefer
@@ -14,9 +13,9 @@ public class SongCannotReachableException extends BaseException {
     public SongCannotReachableException() {
         super();
         this.setErrorResponse(
-                ErrorResponse.builder().code(ChannelErrorCode.SONG_CANNOT_REACHABLE.getCode())
-                        .status(ChannelErrorCode.SONG_CANNOT_REACHABLE.getStatus())
-                        .message(ChannelErrorCode.SONG_CANNOT_REACHABLE.name())
+                ErrorResponse.builder().code(SongErrorCode.SONG_CANNOT_REACHABLE.getCode())
+                        .status(SongErrorCode.SONG_CANNOT_REACHABLE.getStatus())
+                        .message(SongErrorCode.SONG_CANNOT_REACHABLE.name())
                         .build()
         );
     }
