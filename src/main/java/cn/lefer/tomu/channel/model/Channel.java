@@ -1,8 +1,10 @@
 package cn.lefer.tomu.channel.model;
 
-import cn.lefer.tomu.base.constant.PlaylistItemStatus;
 import cn.lefer.tools.Date.LeferDate;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
@@ -20,16 +22,10 @@ public class Channel {
     * the use case of channel:
     * 1. create
     * 2. delete
-    * 3. playlist add a song
-    * 4. playlist remove a song
     * 5. add a play history
     * */
     public static Channel create(){
         return Channel.builder().channelCreateDate(LeferDate.today())
                 .build();
-    }
-
-    public PlaylistItem createPlaylistItem(int channelID, int songID) {
-        return PlaylistItem.builder().channelID(channelID).songID(songID).addDate(LeferDate.today()).playlistItemStatus(PlaylistItemStatus.NORMAL).build();
     }
 }

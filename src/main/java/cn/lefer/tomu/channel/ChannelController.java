@@ -81,9 +81,12 @@ public class ChannelController {
         return Mono.just(channelRepresentationService.getPlaylistItemByID(playlistItemID));
     }
 
-    //TODO:频道下删除歌曲
+    /**
+     * remove a song from a channel
+     *
+     */
     @DeleteMapping(value = "/{channelID}/song/{songID}")
-    public void removeSongFromChannel(@PathVariable("channelID") String channelID, @PathVariable("songID") String songID) {
+    public void removeSongFromChannel(@PathVariable("channelID") int channelID, @PathVariable("songID") int songID) {
         channelApplicationService.deletePlaylistItem(channelID,songID);
     }
 
