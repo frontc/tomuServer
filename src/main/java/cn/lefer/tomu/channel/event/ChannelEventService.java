@@ -54,7 +54,7 @@ public class ChannelEventService {
         }
     }
 
-    /*删除一个事件*/
+    /*删除一个client的所有事件*/
     public void delete(String key) {
         cache.remove(key);
     }
