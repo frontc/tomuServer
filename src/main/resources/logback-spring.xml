@@ -77,7 +77,7 @@
     <logger name="cn.lefer.tomu.channel.model.ChannelMapper" level="debug"/>
     <logger name="cn.lefer.tomu.channel.representation.ChannelRepresentationMapper" level="debug"/>
     <logger name="cn.lefer.tomu.song.SongMapper" level="debug"/>
-
+    <logger name="cn.lefer.tomu.song.SongRepresentationMapper" level="debug"/>
     <logger name="cn.lefer.tomu.service" level="debug"/>
     <!--
         root节点是必选节点，用来指定最基础的日志输出级别，只有一个level属性

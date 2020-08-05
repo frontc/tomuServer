@@ -14,5 +14,10 @@
       "name": "tomu.server.slogan",
       "type": "java.lang.String",
       "description": "Description for tomu.server.slogan."
+    },
+    {
+      "name": "tomu.random.size",
+      "type": "java.lang.String",
+      "description": "Description for tomu.random.size."
     }
   ] }

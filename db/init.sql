@@ -46,7 +46,7 @@ CREATE INDEX idx_t_channel_song_valid_flag
 drop table if exists  t_play_history;
 create table t_play_history
 (
-    play_history_id bigint IDENTITY primary key,
+    play_history_item_id bigint IDENTITY primary key,
     channel_id      int,
     song_id         int,
     last_position   decimal,

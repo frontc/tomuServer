@@ -19,8 +19,14 @@ public interface ChannelRepresentationMapper {
     ChannelRepresentation queryChannelByChannelID(@Param("channelID") int channelID);
 
     List<PlaylistItemRepresentation> queryNormalPlaylistByChannelID(@Param("channelID") int channelID,
-                                                              @Param("playlistItemStatus") PlaylistItemStatus playlistItemStatus,
-                                                              @Param("songStatus") SongStatus songStatus);
+                                                                    @Param("playlistItemStatus") PlaylistItemStatus playlistItemStatus,
+                                                                    @Param("songStatus") SongStatus songStatus);
 
-    PlaylistItemRepresentation queryPlaylistItemByID(long playlistItemID);
+    PlaylistItemRepresentation queryPlaylistItemByID(@Param("playlistItemID") long playlistItemID);
+
+    long queryTotalNumOfPlayHistoryByChannelID(@Param("channelID") int channelID);
+
+    List<PlayHistoryItemRepresentation> queryPlayHistoryByChannelIDAndPageNumAndPageSize(@Param("channelID") int channelID,
+                                                                                         @Param("pageNum") int pageNum,
+                                                                                         @Param("pageSize") int pageSize);
 }

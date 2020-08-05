@@ -22,6 +22,38 @@
         <result column="mp3_url" jdbcType="VARCHAR" property="mp3Url"/>
         <result column="add_date" jdbcType="DATE" property="createDate"/>
     </resultMap>
+    <resultMap id="PlayHistoryItemRepresentationResultMap"
+               type="cn.lefer.tomu.channel.representation.PlayHistoryItemRepresentation">
+        <id column="play_history_item_id" jdbcType="BIGINT" property="playHistoryItemID"/>
+        <result column="channel_id" jdbcType="INTEGER" property="channelID"/>
+        <result column="song_id" jdbcType="INTEGER" property="songID"/>
+        <result column="song_name" jdbcType="VARCHAR" property="songName"/>
+        <result column="song_status" jdbcType="VARCHAR" property="songStatus"/>
+        <result column="artist_name" jdbcType="VARCHAR" property="artistName"/>
+        <result column="play_date" jdbcType="DATE" property="playDate"/>
+    </resultMap>
+
+    <select id="queryTotalNumOfPlayHistoryByChannelID" resultType="long">
+        select count(1)
+        from T_PLAY_HISTORY
+        where CHANNEL_ID = #{channelID}
+    </select>
+
+    <select id="queryPlayHistoryByChannelIDAndPageNumAndPageSize" resultMap="PlayHistoryItemRepresentationResultMap">
+        select TPH.PLAY_HISTORY_ITEM_ID,
+               TPH.CHANNEL_ID,
+               TPH.SONG_ID,
+               TS.SONG_NAME,
+               TS.SONG_STATUS,
+               TS.ARTIST_NAME,
+               TPH.PLAY_DATE
+        from T_PLAY_HISTORY TPH,
+             T_SONG TS
+        where TPH.SONG_ID = TS.SONG_ID
+          and TPH.CHANNEL_ID = #{channelID}
+        order by TPH.PLAY_HISTORY_ITEM_ID desc
+        limit #{pageSize} offset (#{pageNum}-1)*#{pageSize}
+    </select>
 
     <select id="queryChannelByChannelID" resultMap="ChannelRepresentationResultMap">
         select a.CHANNEL_ID, a.CHANNEL_NAME, a.CHANNEL_CRT_DATE, b.SONG_ID, b.LAST_POSITION, b.PLAY_DATE
@@ -32,7 +64,7 @@
              (select CHANNEL_ID, SONG_ID, PLAY_DATE, LAST_POSITION
               from T_PLAY_HISTORY
               where CHANNEL_ID = #{channelID}
-              order by PLAY_HISTORY_ID desc
+              order by PLAY_HISTORY_ITEM_ID desc
               limit 1) b
              on a.CHANNEL_ID = b.CHANNEL_ID
     </select>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.lefer.tomu.song.SongRepresentationMapper">
+    <resultMap id="SongRepresentationResultMap" type="cn.lefer.tomu.song.SongRepresentation">
+        <id column="song_id" jdbcType="INTEGER" property="songID"/>
+        <result column="song_name" jdbcType="VARCHAR" property="songName"/>
+        <result column="artist_name" jdbcType="VARCHAR" property="artistName"/>
+        <result column="song_url" jdbcType="VARCHAR" property="songUrl"/>
+        <result column="mp3_url" jdbcType="VARCHAR" property="mp3Url"/>
+        <result column="cover_url" jdbcType="VARCHAR" property="coverUrl"/>
+        <result column="lrc_url" jdbcType="VARCHAR" property="lrcUrl"/>
+    </resultMap>
+
+    <select id="querySomeNormalSongsByRandom" resultMap="SongRepresentationResultMap">
+        select song_id,
+               song_name,
+               artist_name,
+               song_url,
+               mp3_url,
+               cover_url,
+               lrc_url
+        from T_SONG
+        where SONG_STATUS = #{songStatus}
+        order by random()
+        limit #{size}
+    </select>
+</mapper>

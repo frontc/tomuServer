@@ -1,5 +1,6 @@
 package cn.lefer.tomu.channel.representation;
 
+import cn.lefer.tomu.base.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -31,5 +32,9 @@ public class ChannelRepresentationService {
 
     public List<PlaylistItemRepresentation> getPlaylist(int channelID) {
         return representationRepository.getPlaylistByChannelID(channelID);
+    }
+
+    public Page<PlayHistoryItemRepresentation> getPlayHistory(int channelID, int pageNum, int pageSize) {
+        return representationRepository.getPlayHistoryByChannelID(channelID,pageNum,pageSize);
     }
 }

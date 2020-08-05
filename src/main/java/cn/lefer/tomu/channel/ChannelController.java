@@ -1,9 +1,12 @@
 
 package cn.lefer.tomu.channel;
 
+import cn.lefer.tomu.base.Page;
 import cn.lefer.tomu.channel.command.AddSongCommand;
+import cn.lefer.tomu.channel.command.GetPlayHistoryCommand;
 import cn.lefer.tomu.channel.representation.ChannelRepresentation;
 import cn.lefer.tomu.channel.representation.ChannelRepresentationService;
+import cn.lefer.tomu.channel.representation.PlayHistoryItemRepresentation;
 import cn.lefer.tomu.channel.representation.PlaylistItemRepresentation;
 import cn.lefer.tomu.song.SongApplicationService;
 import org.springframework.http.MediaType;
@@ -98,8 +101,15 @@ public class ChannelController {
     public void broadcastChannelStatus() {
     }
 
-    //TODO:获取频道的播放历史
-    public void getPlayHistoryInChannel() {
+    /**
+     * get channel's play history
+     *
+     * @param getPlayHistoryCommand page size and page number;
+     * @return Page<PlayHistoryItemRepresentation>
+     */
+    @GetMapping(value = "/{channelID}/playHistory", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public Mono<Page<PlayHistoryItemRepresentation>> getPlayHistoryInChannel(@PathVariable int channelID,
+                                                                             @Validated GetPlayHistoryCommand getPlayHistoryCommand) {
+        return Mono.just(channelRepresentationService.getPlayHistory(channelID,getPlayHistoryCommand.getPageNum(),getPlayHistoryCommand.getPageSize()));
     }
-
 }
