@@ -5,10 +5,7 @@ import cn.lefer.tools.Date.LeferDate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
@@ -19,7 +16,7 @@ import java.util.stream.Collectors;
  * @Description : 用户在线状态保持
  */
 @Component
-public class OnlineStatus {
+public class AudienceOnlineService {
     @Value("${tomu.channel.size}")
     int CHANNEL_SIZE;
     @Value("${tomu.channel.idle.time}")
@@ -37,7 +34,7 @@ public class OnlineStatus {
     ConcurrentHashMap<Integer, ConcurrentHashMap<String, Date>> channelStatusMap;//频道里的访客
     ConcurrentHashMap<String, ChannelPlus> userStatusMap;//访客对应的频道，一个访客只能属于一个频道
 
-    public OnlineStatus() {
+    public AudienceOnlineService() {
         channelStatusMap = new ConcurrentHashMap<>();
         userStatusMap = new ConcurrentHashMap<>();
     }
@@ -102,15 +99,19 @@ public class OnlineStatus {
         return channelStatusMap.get(channelID).keySet();
     }
 
-    public boolean exit(String token, int channelID) {
+    public void exit(int channelID, String token) {
         channelStatusMap.get(channelID).remove(token);
         if (channelID == userStatusMap.get(token).getChannelID()) {
             userStatusMap.remove(token);
         }
-        return true;
     }
 
-    private class ChannelPlus {
+    public void kick(int channelID,String nickname){
+        Optional<String> toKick = getAudienceWithFullName(channelID).stream().filter(fullName -> TomuUtils.getNickname(fullName).equals(nickname)).findFirst();
+        toKick.ifPresent(k->exit(channelID,k));
+    }
+
+    private static class ChannelPlus {
         int channelID;
         Date updateDate;
 

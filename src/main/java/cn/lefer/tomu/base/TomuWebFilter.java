@@ -24,10 +24,10 @@ import reactor.core.publisher.Mono;
 public class TomuWebFilter implements WebFilter {
     @Value("${tomu.token.key}")
     String TOKEN_KEY;
-    OnlineStatus onlineStatus;
+    AudienceOnlineService audienceOnlineService;
 
-    public TomuWebFilter(OnlineStatus onlineStatus) {
-        this.onlineStatus = onlineStatus;
+    public TomuWebFilter(AudienceOnlineService audienceOnlineService) {
+        this.audienceOnlineService = audienceOnlineService;
     }
 
     @Override
@@ -47,7 +47,7 @@ public class TomuWebFilter implements WebFilter {
             //获取本次请求的ChannelID
             int channelID = getChannelID(path.split("/"));
             //记录访客的频道
-            if (channelID > 0) onlineStatus.updateOnlineStatus(token, channelID);
+            if (channelID > 0) audienceOnlineService.updateOnlineStatus(token, channelID);
         }
         return webFilterChain.filter(serverWebExchange);
     }

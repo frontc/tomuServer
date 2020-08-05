@@ -1,7 +1,9 @@
 
 package cn.lefer.tomu.channel;
 
+import cn.lefer.tomu.base.AudienceOnlineService;
 import cn.lefer.tomu.base.Page;
+import cn.lefer.tomu.base.TomuUtils;
 import cn.lefer.tomu.channel.command.AddSongCommand;
 import cn.lefer.tomu.channel.command.GetPlayHistoryCommand;
 import cn.lefer.tomu.channel.representation.ChannelRepresentation;
@@ -12,10 +14,12 @@ import cn.lefer.tomu.song.SongApplicationService;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/v1/channel")
@@ -26,6 +30,8 @@ public class ChannelController {
     private ChannelRepresentationService channelRepresentationService;
     @Resource
     private SongApplicationService songApplicationService;
+    @Resource
+    private AudienceOnlineService audienceOnlineService;
 
     /**
      * Create a channel
@@ -111,5 +117,34 @@ public class ChannelController {
     public Mono<Page<PlayHistoryItemRepresentation>> getPlayHistoryInChannel(@PathVariable int channelID,
                                                                              @Validated GetPlayHistoryCommand getPlayHistoryCommand) {
         return Mono.just(channelRepresentationService.getPlayHistory(channelID,getPlayHistoryCommand.getPageNum(),getPlayHistoryCommand.getPageSize()));
+    }
+
+    /**
+     * get channel's audience
+     *
+     * @return audience lists
+     */
+    @GetMapping(value = "/{channelID}/audience")
+    public List<String> getAudience(@PathVariable("channelID") @Validated int channelID) {
+        return audienceOnlineService.getAudienceWithNickName(channelID);
+    }
+
+    /**
+     * audience leave from a channel
+     *
+     */
+    @DeleteMapping(value = "/{channelID}/audience")
+    public void audienceExitFromChannel(@PathVariable("channelID") @Validated int channelID, ServerWebExchange exchange) {
+        audienceOnlineService.exit(channelID, TomuUtils.getToken(exchange));
+    }
+
+    /**
+     * audience kick away a channel
+     *
+     */
+    @DeleteMapping(value = "/{channelID}/audience/{nickName}")
+    public void kickOthers(@PathVariable("channelID") @Validated int channelID,
+                              @PathVariable("nickName") String nickName) {
+        audienceOnlineService.kick(channelID, nickName);
     }
 }

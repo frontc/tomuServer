@@ -14,6 +14,7 @@ import org.springframework.web.reactive.function.server.*;
 import reactor.core.publisher.Mono;
 
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * @author : lefer
@@ -58,8 +59,9 @@ public class GlobalErrorWebExceptionHandler extends AbstractErrorWebExceptionHan
             return ((BaseException) throwable).getErrorResponse();
         } else {
             return ErrorResponse.builder().code("-1")
-                    .message(errorPropertiesMap.get("message").toString())
-                    .status((int) errorPropertiesMap.get("status")).build();
+                    .message(Optional.ofNullable(errorPropertiesMap.get("message")).map(Object::toString).orElse(""))
+                    .status((int) errorPropertiesMap.get("status"))
+                    .build();
         }
     }
 }
