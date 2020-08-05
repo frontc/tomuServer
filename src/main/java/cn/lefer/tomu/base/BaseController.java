@@ -42,4 +42,14 @@ public class BaseController {
         String hostString = Optional.ofNullable(exchange.getRequest().getRemoteAddress()).map(InetSocketAddress::getHostString).orElse("");
         return Mono.just(LeferJwt.createToken("tomu", hostString, TOKEN_KEY, TOKEN_TTMIllIS));
     }
+
+    /**
+     * get current audience's nick name
+     *
+     * @return nickname
+     */
+    @GetMapping(value = "/who")
+    public String who(ServerWebExchange exchange) {
+        return Optional.ofNullable(TomuUtils.getToken(exchange)).map(TomuUtils::getNickname).orElse("anonymous");
+    }
 }

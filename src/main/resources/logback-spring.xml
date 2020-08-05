@@ -72,7 +72,7 @@
     </appender>
     <!-- 设置需要打印日志的包及输出级别 -->
     <!-- debug下打印 request id及path -->
-    <logger name="cn.lefer.tomu.filter" level="debug"/>
+    <logger name="cn.lefer.tomu.base.TomuWebFilter" level="debug"/>
     <!-- debug下打印 sql -->
     <logger name="cn.lefer.tomu.channel.model.ChannelMapper" level="debug"/>
     <logger name="cn.lefer.tomu.channel.representation.ChannelRepresentationMapper" level="debug"/>

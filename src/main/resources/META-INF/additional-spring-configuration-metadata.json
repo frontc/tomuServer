@@ -29,5 +29,20 @@
       "name": "tomu.token.ttMillis",
       "type": "java.lang.String",
       "description": "Description for tomu.token.ttMillis."
+    },
+    {
+      "name": "tomu.channel.size",
+      "type": "java.lang.String",
+      "description": "Description for tomu.channel.size."
+    },
+    {
+      "name": "tomu.channel.idle.time",
+      "type": "java.lang.String",
+      "description": "Description for tomu.channel.idle.time."
+    },
+    {
+      "name": "tomu.channel.silence.time",
+      "type": "java.lang.String",
+      "description": "Description for tomu.channel.silence.time."
     }
   ] }
