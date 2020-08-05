@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = "/api/v2/audience")
+@RequestMapping(value = "/api/v1/audience")
 public class AudienceController {
     //TODO:获取自己的昵称
     public void whoAmI(){}

@@ -19,5 +19,15 @@
       "name": "tomu.random.size",
       "type": "java.lang.String",
       "description": "Description for tomu.random.size."
+    },
+    {
+      "name": "tomu.token.key",
+      "type": "java.lang.String",
+      "description": "Description for tomu.token.key."
+    },
+    {
+      "name": "tomu.token.ttMillis",
+      "type": "java.lang.String",
+      "description": "Description for tomu.token.ttMillis."
     }
   ] }
