@@ -8,6 +8,9 @@ package cn.lefer.tomu.base.exception;
  */
 
 public enum SystemErrorCode {
+    PATH_VARIABLE_TYPE_MISMATCH("4221",422),
+    ARGUMENT_TYPE_MISMATCH("4220",422),
+    URL_NOT_EXIST("4040",404),
     NO_TOKEN("4030", 403),
     INVALID_TOKEN("4031", 403),
     CHANNEL_IS_FULL("4000",400);

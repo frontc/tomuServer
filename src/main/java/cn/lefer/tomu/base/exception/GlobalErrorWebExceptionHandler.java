@@ -9,6 +9,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.http.MediaType;
 import org.springframework.http.codec.ServerCodecConfigurer;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.support.WebExchangeBindException;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.server.*;
 import reactor.core.publisher.Mono;
@@ -55,13 +56,14 @@ public class GlobalErrorWebExceptionHandler extends AbstractErrorWebExceptionHan
                         ErrorAttributeOptions.Include.STACK_TRACE,
                         ErrorAttributeOptions.Include.MESSAGE));
         Throwable throwable = this.getError(request);
-        if (throwable instanceof BaseException) {
-            return ((BaseException) throwable).getErrorResponse();
-        } else {
-            return ErrorResponse.builder().code("-1")
-                    .message(Optional.ofNullable(errorPropertiesMap.get("message")).map(Object::toString).orElse(""))
-                    .status((int) errorPropertiesMap.get("status"))
-                    .build();
-        }
+        if (throwable instanceof BaseException) return ((BaseException) throwable).getErrorResponse();
+        int status = (int) errorPropertiesMap.get("status");
+        if (status == 404) return ErrorResponseFactory.generate(SystemErrorCode.URL_NOT_EXIST);
+        if(throwable instanceof NumberFormatException) return ErrorResponseFactory.generate(SystemErrorCode.PATH_VARIABLE_TYPE_MISMATCH);
+        if(throwable instanceof WebExchangeBindException) return ErrorResponseFactory.generate(SystemErrorCode.ARGUMENT_TYPE_MISMATCH);
+        return ErrorResponse.builder().code("-1")
+                .message(Optional.ofNullable(errorPropertiesMap.get("message")).map(Object::toString).orElse(""))
+                .status(status)
+                .build();
     }
 }
