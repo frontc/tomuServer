@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.lefer.tomu.channel.model.PlayHistoryItemMapper">
+    <resultMap id="playHistoryItemResultMap" type="cn.lefer.tomu.channel.model.PlayHistoryItem">
+        <id column="play_history_item_id" jdbcType="BIGINT" property="playHistoryItemID"/>
+        <result column="channel_id" jdbcType="INTEGER" property="channelID"/>
+        <result column="song_id" jdbcType="INTEGER" property="songID"/>
+        <result column="last_position" jdbcType="DOUBLE" property="lastPosition"/>
+        <result column="play_date" jdbcType="DATE" property="playDate"/>
+    </resultMap>
+
+    <select id="selectLastItemByChannelID" resultMap="playHistoryItemResultMap">
+        select PLAY_HISTORY_ITEM_ID, CHANNEL_ID, SONG_ID, LAST_POSITION, PLAY_DATE
+        from T_PLAY_HISTORY
+        where CHANNEL_ID = #{channelID}
+        order by PLAY_HISTORY_ITEM_ID desc
+        limit 1
+    </select>
+
+    <insert id="insert" parameterType="cn.lefer.tomu.channel.model.PlayHistoryItem" useGeneratedKeys="true"
+            keyProperty="playHistoryItemID">
+        insert into T_PLAY_HISTORY(CHANNEL_ID, SONG_ID, LAST_POSITION, PLAY_DATE)
+        values (#{channelID}, #{songID}, #{lastPosition}, #{playDate})
+    </insert>
+
+    <update id="update" parameterType="cn.lefer.tomu.channel.model.PlayHistoryItem">
+        update T_PLAY_HISTORY
+        set CHANNEL_ID=#{channelID},
+            SONG_ID=#{songID},
+            LAST_POSITION=#{lastPosition},
+            PLAY_DATE=#{playDate}
+        where PLAY_HISTORY_ITEM_ID = #{playHistoryItemID}
+    </update>
+</mapper>

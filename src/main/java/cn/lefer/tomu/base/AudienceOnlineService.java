@@ -1,6 +1,7 @@
 package cn.lefer.tomu.base;
 
 import cn.lefer.tomu.base.exception.ChannelFullException;
+import cn.lefer.tomu.base.utils.TomuUtils;
 import cn.lefer.tools.Date.LeferDate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -106,9 +107,12 @@ public class AudienceOnlineService {
         }
     }
 
+    public Optional<String> getAudienceWithFullNameByNickname(int channelID,String nickname){
+        return getAudienceWithFullName(channelID).stream().filter(fullName -> TomuUtils.getNickname(fullName).equals(nickname)).findFirst();
+    }
+
     public void kick(int channelID,String nickname){
-        Optional<String> toKick = getAudienceWithFullName(channelID).stream().filter(fullName -> TomuUtils.getNickname(fullName).equals(nickname)).findFirst();
-        toKick.ifPresent(k->exit(channelID,k));
+        getAudienceWithFullNameByNickname(channelID,nickname).ifPresent(k->exit(channelID,k));
     }
 
     private static class ChannelPlus {

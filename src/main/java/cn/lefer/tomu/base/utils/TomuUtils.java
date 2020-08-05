@@ -1,4 +1,4 @@
-package cn.lefer.tomu.base;
+package cn.lefer.tomu.base.utils;
 
 import org.springframework.web.server.ServerWebExchange;
 
