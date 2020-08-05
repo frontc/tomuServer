@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.lefer.tomu.song.SongMapper">
-    <resultMap id="SongResultMap" type="cn.lefer.tomu.song.Song">
+    <resultMap id="songResultMap" type="cn.lefer.tomu.song.Song">
         <id column="song_id" jdbcType="INTEGER" property="songID"/>
         <result column="song_name" jdbcType="VARCHAR" property="songName"/>
         <result column="song_duration" jdbcType="DOUBLE" property="songDuration"/>
@@ -15,6 +15,25 @@
         <result column="song_add_date" jdbcType="DATE" property="songAddDate"/>
     </resultMap>
 
+    <update id="batchUpdateSongStatus">
+        update T_SONG
+        set SONG_STATUS = #{songStatus}
+        where SONG_ID in
+        <foreach collection="songIDs" item="songID" open="(" separator="," close=")">
+            #{songID}
+        </foreach>
+    </update>
+
+    <select id="selectAll" resultMap="songResultMap">
+        select song_id, song_name, song_duration, artist_name, song_source, song_url, mp3_url, cover_url, lrc_url,
+        song_status, song_add_date
+        from T_SONG
+        where SONG_STATUS in
+        <foreach collection="songStatusList" item="songStatus" open="(" separator="," close=")">
+            #{songStatus}
+        </foreach>
+    </select>
+
     <insert id="insert" parameterType="cn.lefer.tomu.song.Song" useGeneratedKeys="true" keyProperty="songID">
         insert into T_SONG(SONG_NAME, SONG_DURATION, ARTIST_NAME, SONG_SOURCE, SONG_URL, MP3_URL, COVER_URL, LRC_URL,
                            SONG_STATUS, SONG_ADD_DATE)
@@ -22,16 +41,37 @@
                 #{lrcUrl}, #{songStatus}, #{songAddDate})
     </insert>
 
-    <select id="byID" resultMap="SongResultMap">
-        select song_id, song_name, song_duration, artist_name, song_source, song_url, mp3_url, cover_url, lrc_url, song_status, song_add_date
+    <select id="byID" resultMap="songResultMap">
+        select song_id,
+               song_name,
+               song_duration,
+               artist_name,
+               song_source,
+               song_url,
+               mp3_url,
+               cover_url,
+               lrc_url,
+               song_status,
+               song_add_date
         from T_SONG
         where SONG_ID = #{songID}
     </select>
 
-    <select id="bySongNameAndArtistNameOrMP3Url" resultMap="SongResultMap">
-        select song_id, song_name, song_duration, artist_name, song_source, song_url, mp3_url, cover_url, lrc_url, song_status, song_add_date
+    <select id="bySongNameAndArtistNameOrMP3Url" resultMap="songResultMap">
+        select song_id,
+               song_name,
+               song_duration,
+               artist_name,
+               song_source,
+               song_url,
+               mp3_url,
+               cover_url,
+               lrc_url,
+               song_status,
+               song_add_date
         from T_SONG
-        where (SONG_NAME = #{songName} and ARTIST_NAME = #{artistName}) or MP3_URL = #{mp3Url}
+        where (SONG_NAME = #{songName} and ARTIST_NAME = #{artistName})
+           or MP3_URL = #{mp3Url}
         limit 1
     </select>
 </mapper>

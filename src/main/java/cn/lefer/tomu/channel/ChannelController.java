@@ -65,10 +65,6 @@ public class ChannelController {
         return Mono.just(channelRepresentation);
     }
 
-    //TODO:分页获取频道歌单
-    public void getSongsByPageInChannel() {
-    }
-
     /**
      * get channel's playlist
      *

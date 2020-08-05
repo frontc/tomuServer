@@ -37,7 +37,7 @@ public class TomuWebFilter implements WebFilter {
         String path = request.getPath().value();
         log.debug(request.getId() + " - " + path);
         //特殊处理SSE接口
-        if (HttpMethod.GET.equals(request.getMethod()) && path.contains("status")) {
+        if (HttpMethod.GET.equals(request.getMethod()) && path.contains("event")) {
             return webFilterChain.filter(serverWebExchange);
         }
         if (path.contains("channel")) {

@@ -32,9 +32,7 @@ create table t_playlist
     channel_id int,
     song_id int,
     add_date datetime,
-    playlist_item_status varchar(20),
-    foreign key (channel_id) references t_channel(channel_id),
-    foreign key (song_id) references t_song(song_id)
+    playlist_item_status varchar(20)
 );
 CREATE INDEX idx_t_channel_song_channel_id
     ON t_playlist (channel_id);

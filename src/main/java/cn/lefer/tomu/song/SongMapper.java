@@ -1,7 +1,10 @@
 package cn.lefer.tomu.song;
 
+import cn.lefer.tomu.base.constant.SongStatus;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * @author : lefer
@@ -16,4 +19,8 @@ public interface SongMapper {
     Song bySongNameAndArtistNameOrMP3Url(@Param("songName") String songName,
                                          @Param("artistName") String artistName,
                                          @Param("mp3Url") String mp3Url);
+
+    List<Song> selectAll(@Param("songStatusList") List<SongStatus> songStatusList);
+
+    int batchUpdateSongStatus(@Param("songStatus") SongStatus songStatus, @Param("songIDs") List<Integer> songIDs);
 }
