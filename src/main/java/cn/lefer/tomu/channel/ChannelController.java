@@ -3,13 +3,13 @@ package cn.lefer.tomu.channel;
 
 import cn.lefer.tomu.base.AudienceOnlineService;
 import cn.lefer.tomu.base.Page;
-import cn.lefer.tomu.channel.event.ChannelEvent;
-import cn.lefer.tomu.channel.event.ChannelEventService;
-import cn.lefer.tomu.channel.event.detail.AbstractChannelEventDetail;
 import cn.lefer.tomu.base.utils.TomuUtils;
 import cn.lefer.tomu.channel.command.AddSongCommand;
 import cn.lefer.tomu.channel.command.ChannelPlayStatusChangeCommand;
 import cn.lefer.tomu.channel.command.GetPlayHistoryCommand;
+import cn.lefer.tomu.channel.event.ChannelEvent;
+import cn.lefer.tomu.channel.event.ChannelEventService;
+import cn.lefer.tomu.channel.event.detail.AbstractChannelEventDetail;
 import cn.lefer.tomu.channel.representation.ChannelRepresentation;
 import cn.lefer.tomu.channel.representation.ChannelRepresentationService;
 import cn.lefer.tomu.channel.representation.PlayHistoryItemRepresentation;
@@ -26,7 +26,6 @@ import reactor.core.publisher.Mono;
 import javax.annotation.Resource;
 import java.time.Duration;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/api/v1/channel")
@@ -57,11 +56,11 @@ public class ChannelController {
      *
      * @return ChannelRepresentation. the channel info
      */
-    @GetMapping(value = "/{channelID}")
-    public Mono<ChannelRepresentation> getChannel(@PathVariable("channelID") @Validated int channelID,
+    @GetMapping(value = "/{channelID:^[1-9]\\d*$}")
+    public Mono<ChannelRepresentation> getChannel(@PathVariable("channelID") int channelID,
                                                   ServerWebExchange exchange) {
         ChannelRepresentation channelRepresentation = channelRepresentationService.getChannel(channelID);
-        channelEventService.publishAudienceInEvent(channelID,TomuUtils.getToken(exchange));
+        channelEventService.publishAudienceInEvent(channelID, TomuUtils.getToken(exchange));
         return Mono.just(channelRepresentation);
     }
 
@@ -70,7 +69,7 @@ public class ChannelController {
      *
      * @return Flux<PlaylistItemRepresentation>. the channel's playlist
      */
-    @GetMapping(value = "/{channelID}/songs/all")
+    @GetMapping(value = "/{channelID:^[1-9]\\d*$}/songs/all")
     public Flux<PlaylistItemRepresentation> getSongsInChannel(@PathVariable("channelID") int channelID) {
         return Flux.fromStream(channelRepresentationService.getPlaylist(channelID).stream());
     }
@@ -81,7 +80,7 @@ public class ChannelController {
      * @param addSongCommand the info of a song
      * @return PlaylistItemRepresentation.
      */
-    @PostMapping(value = "/{channelID}/song", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    @PostMapping(value = "/{channelID:^[1-9]\\d*$}/song", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public Mono<PlaylistItemRepresentation> addSongToChannel(@PathVariable("channelID") @Validated int channelID,
                                                              @Validated AddSongCommand addSongCommand,
                                                              ServerWebExchange exchange) {
@@ -97,7 +96,7 @@ public class ChannelController {
         long playlistItemID = channelApplicationService.addPlaylistItem(channelID, songID);
         PlaylistItemRepresentation playlistItemRepresentation = channelRepresentationService.getPlaylistItemByID(playlistItemID);
         //3.广播消息
-        channelEventService.publishSongAddEvent(channelID,TomuUtils.getToken(exchange),playlistItemRepresentation);
+        channelEventService.publishSongAddEvent(channelID, TomuUtils.getToken(exchange), playlistItemRepresentation);
         //4.返回歌单项目
         return Mono.just(playlistItemRepresentation);
     }
@@ -105,11 +104,11 @@ public class ChannelController {
     /**
      * remove a song from a channel
      */
-    @DeleteMapping(value = "/{channelID}/song/{songID}")
+    @DeleteMapping(value = "/{channelID:^[1-9]\\d*$}/song/{songID}")
     public void removeSongFromChannel(@PathVariable("channelID") int channelID, @PathVariable("songID") int songID,
                                       ServerWebExchange exchange) {
         channelApplicationService.deletePlaylistItem(channelID, songID);
-        channelEventService.publishSongRemoveEvent(channelID,songID,TomuUtils.getToken(exchange));
+        channelEventService.publishSongRemoveEvent(channelID, songID, TomuUtils.getToken(exchange));
     }
 
     /**
@@ -117,7 +116,7 @@ public class ChannelController {
      *
      * @param command songID,position,PLAY/PAUSE status
      */
-    @PostMapping(value = "/{channelID}/event/playStatusChange", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    @PostMapping(value = "/{channelID:^[1-9]\\d*$}/event/playStatusChange", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public void reportChannelPlayStatus(@PathVariable int channelID,
                                         ServerWebExchange exchange,
                                         @Validated ChannelPlayStatusChangeCommand command) {
@@ -128,9 +127,9 @@ public class ChannelController {
      * publish news to client
      *
      * @param clientID clientID alias token
-     * @return ServerSentEvent<ChannelEvent<? extends AbstractChannelEventDetail>>
+     * @return ServerSentEvent<ChannelEvent < ? extends AbstractChannelEventDetail>>
      */
-    @GetMapping(value = "/{channelID}/event",produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    @GetMapping(value = "/{channelID:^[1-9]\\d*$}/event", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<ServerSentEvent<ChannelEvent<? extends AbstractChannelEventDetail>>> broadcastChannelStatus(@PathVariable("channelID") @Validated int channelID,
                                                                                                             @RequestParam @Validated String clientID) {
         return Flux.interval(Duration.ofMillis(100))
@@ -144,7 +143,7 @@ public class ChannelController {
      * @param getPlayHistoryCommand page size and page number;
      * @return Page<PlayHistoryItemRepresentation>
      */
-    @GetMapping(value = "/{channelID}/playHistory", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    @GetMapping(value = "/{channelID:^[1-9]\\d*$}/playHistory", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public Mono<Page<PlayHistoryItemRepresentation>> getPlayHistoryInChannel(@PathVariable int channelID,
                                                                              @Validated GetPlayHistoryCommand getPlayHistoryCommand) {
         return Mono.just(channelRepresentationService.getPlayHistory(channelID, getPlayHistoryCommand.getPageNum(), getPlayHistoryCommand.getPageSize()));
@@ -155,7 +154,7 @@ public class ChannelController {
      *
      * @return audience lists
      */
-    @GetMapping(value = "/{channelID}/audience")
+    @GetMapping(value = "/{channelID:^[1-9]\\d*$}/audience")
     public List<String> getAudience(@PathVariable("channelID") @Validated int channelID) {
         return audienceOnlineService.getAudienceWithNickName(channelID);
     }
@@ -163,7 +162,7 @@ public class ChannelController {
     /**
      * audience leave from a channel
      */
-    @DeleteMapping(value = "/{channelID}/audience")
+    @DeleteMapping(value = "/{channelID:^[1-9]\\d*$}/audience")
     public void audienceExitFromChannel(@PathVariable("channelID") @Validated int channelID, ServerWebExchange exchange) {
         audienceOnlineService.exit(channelID, TomuUtils.getToken(exchange));
         channelEventService.publishAudienceOutEvent(channelID, TomuUtils.getToken(exchange));
@@ -172,10 +171,10 @@ public class ChannelController {
     /**
      * audience kick away a channel
      */
-    @DeleteMapping(value = "/{channelID}/audience/{nickName}")
+    @DeleteMapping(value = "/{channelID:^[1-9]\\d*$}/audience/{nickName}")
     public void kickOthers(@PathVariable("channelID") @Validated int channelID,
                            @PathVariable("nickName") String nickName) {
-        audienceOnlineService.getAudienceWithFullNameByNickname(channelID,nickName).ifPresent(token->channelEventService.publishAudienceOutEvent(channelID,token));
+        audienceOnlineService.getAudienceWithFullNameByNickname(channelID, nickName).ifPresent(token -> channelEventService.publishAudienceOutEvent(channelID, token));
         audienceOnlineService.kick(channelID, nickName);
     }
 }

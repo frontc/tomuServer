@@ -56,14 +56,23 @@ public class GlobalErrorWebExceptionHandler extends AbstractErrorWebExceptionHan
                         ErrorAttributeOptions.Include.STACK_TRACE,
                         ErrorAttributeOptions.Include.MESSAGE));
         Throwable throwable = this.getError(request);
+        String message = Optional.ofNullable(errorPropertiesMap.get("message")).map(Object::toString).orElse("");
         if (throwable instanceof BaseException) return ((BaseException) throwable).getErrorResponse();
         int status = (int) errorPropertiesMap.get("status");
         if (status == 404) return ErrorResponseFactory.generate(SystemErrorCode.URL_NOT_EXIST);
-        if(throwable instanceof NumberFormatException) return ErrorResponseFactory.generate(SystemErrorCode.PATH_VARIABLE_TYPE_MISMATCH);
-        if(throwable instanceof WebExchangeBindException) return ErrorResponseFactory.generate(SystemErrorCode.ARGUMENT_TYPE_MISMATCH);
-        return ErrorResponse.builder().code("-1")
-                .message(Optional.ofNullable(errorPropertiesMap.get("message")).map(Object::toString).orElse(""))
-                .status(status)
-                .build();
+        if (throwable instanceof NumberFormatException)
+            return ErrorResponseFactory.generate(SystemErrorCode.PATH_VARIABLE_TYPE_MISMATCH);
+        if (throwable instanceof WebExchangeBindException) {
+            ErrorResponse errorResponse = ErrorResponseFactory.generate(SystemErrorCode.INVALID_PARAMETER);
+            if (message.contains("default message")) {
+                String[] stringList = message.split("default message");
+                String simpleMsg = stringList[stringList.length - 1].replace("[", "")
+                        .replace("]", "")
+                        .replace("\"", "").trim();
+                errorResponse.setMessage(simpleMsg);
+            }
+            return errorResponse;
+        }
+        return ErrorResponse.builder().code("-1").message(message).status(status).build();
     }
 }
