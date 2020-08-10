@@ -1,6 +1,6 @@
 package cn.lefer.tomu.base.exception;
 
-import cn.lefer.tomu.channel.exception.ChannelErrorCode;
+import static cn.lefer.tomu.base.exception.SystemErrorCode.NO_TOKEN;
 
 /**
  * @author : lefer
@@ -10,12 +10,6 @@ import cn.lefer.tomu.channel.exception.ChannelErrorCode;
  */
 public class NoTokenException extends BaseException {
     public NoTokenException() {
-        super();
-        this.setErrorResponse(
-                ErrorResponse.builder().code(SystemErrorCode.NO_TOKEN.getCode())
-                        .status(SystemErrorCode.NO_TOKEN.getStatus())
-                        .message(SystemErrorCode.NO_TOKEN.name())
-                        .build()
-        );
+        super(NO_TOKEN);
     }
 }

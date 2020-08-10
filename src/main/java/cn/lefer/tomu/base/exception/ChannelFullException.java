@@ -8,12 +8,6 @@ package cn.lefer.tomu.base.exception;
  */
 public class ChannelFullException extends BaseException {
     public ChannelFullException() {
-        super();
-        this.setErrorResponse(
-                ErrorResponse.builder().code(SystemErrorCode.CHANNEL_IS_FULL.getCode())
-                        .status(SystemErrorCode.CHANNEL_IS_FULL.getStatus())
-                        .message(SystemErrorCode.CHANNEL_IS_FULL.name())
-                        .build()
-        );
+        super(SystemErrorCode.CHANNEL_IS_FULL);
     }
 }

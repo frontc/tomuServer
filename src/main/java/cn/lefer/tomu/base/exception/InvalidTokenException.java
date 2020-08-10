@@ -8,12 +8,6 @@ package cn.lefer.tomu.base.exception;
  */
 public class InvalidTokenException extends BaseException {
     public InvalidTokenException() {
-        super();
-        this.setErrorResponse(
-                ErrorResponse.builder().code(SystemErrorCode.INVALID_TOKEN.getCode())
-                        .status(SystemErrorCode.INVALID_TOKEN.getStatus())
-                        .message(SystemErrorCode.INVALID_TOKEN.name())
-                        .build()
-        );
+        super(SystemErrorCode.INVALID_TOKEN);
     }
 }

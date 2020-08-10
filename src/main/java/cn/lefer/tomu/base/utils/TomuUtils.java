@@ -9,6 +9,7 @@ import org.springframework.web.server.ServerWebExchange;
  * @Description : Tomu工具类
  */
 public class TomuUtils {
+    private TomuUtils(){}
     public static String getToken(ServerWebExchange serverWebExchange) {
         String authorization = serverWebExchange.getRequest().getHeaders().getFirst("Authorization");
         if (authorization == null || !authorization.startsWith("Bearer ")) {

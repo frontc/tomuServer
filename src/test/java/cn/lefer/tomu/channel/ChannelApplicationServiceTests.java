@@ -13,13 +13,13 @@ import org.springframework.transaction.annotation.Transactional;
  * @Description : 测试频道领域应用服务
  */
 @SpringBootTest
-public class ChannelApplicationServiceTests {
+class ChannelApplicationServiceTests {
     @Autowired
     ChannelApplicationService applicationService;
 
     @Test
     @Transactional
-    public void testCreate(){
+    void testCreate(){
         int firstID = applicationService.createChannel();
         int secondID= applicationService.createChannel();
         Assertions.assertTrue(secondID>firstID);

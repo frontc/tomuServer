@@ -1,7 +1,8 @@
 package cn.lefer.tomu.channel.exception;
 
 import cn.lefer.tomu.base.exception.BaseException;
-import cn.lefer.tomu.base.exception.ErrorResponse;
+
+import static cn.lefer.tomu.channel.exception.ChannelErrorCode.CHANNEL_NOT_EXIST;
 
 /**
  * @author : lefer
@@ -11,12 +12,6 @@ import cn.lefer.tomu.base.exception.ErrorResponse;
  */
 public class ChannelNotExistException extends BaseException {
     public ChannelNotExistException() {
-        super();
-        this.setErrorResponse(
-                ErrorResponse.builder().code(ChannelErrorCode.CHANNEL_NOT_EXIST.getCode())
-                        .status(ChannelErrorCode.CHANNEL_NOT_EXIST.getStatus())
-                        .message(ChannelErrorCode.CHANNEL_NOT_EXIST.name())
-                        .build()
-        );
+        super(CHANNEL_NOT_EXIST);
     }
 }

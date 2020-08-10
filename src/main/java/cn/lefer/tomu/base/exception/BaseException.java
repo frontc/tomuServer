@@ -1,6 +1,7 @@
 package cn.lefer.tomu.base.exception;
 
-import cn.lefer.tomu.base.exception.ErrorResponse;
+import cn.lefer.tomu.channel.exception.ChannelErrorCode;
+import cn.lefer.tomu.song.exception.SongErrorCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,9 +13,15 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public abstract class BaseException extends RuntimeException{
-    ErrorResponse errorResponse;
-    public BaseException(){
+public abstract class BaseException extends RuntimeException {
+    final ErrorResponse errorResponse;
+
+    public BaseException(ErrorCode errorCode) {
         super();
+        this.errorResponse =
+                ErrorResponse.builder().code(errorCode.getCode())
+                        .status(errorCode.getStatus())
+                        .message(errorCode.getName())
+                        .build();
     }
 }

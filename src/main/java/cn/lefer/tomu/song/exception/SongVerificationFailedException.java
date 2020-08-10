@@ -1,7 +1,8 @@
 package cn.lefer.tomu.song.exception;
 
 import cn.lefer.tomu.base.exception.BaseException;
-import cn.lefer.tomu.base.exception.ErrorResponse;
+
+import static cn.lefer.tomu.song.exception.SongErrorCode.SONG_VERIFY_FAILED;
 
 /**
  * @author : lefer
@@ -11,12 +12,7 @@ import cn.lefer.tomu.base.exception.ErrorResponse;
  */
 public class SongVerificationFailedException extends BaseException {
     public SongVerificationFailedException() {
-        super();
-        this.setErrorResponse(
-                ErrorResponse.builder().code(SongErrorCode.SONG_VERIFY_FAILED.getCode())
-                        .status(SongErrorCode.SONG_VERIFY_FAILED.getStatus())
-                        .message(SongErrorCode.SONG_VERIFY_FAILED.name())
-                        .build()
-        );
+        super(SONG_VERIFY_FAILED);
+
     }
 }

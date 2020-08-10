@@ -4,6 +4,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
+
 /**
  * @author : lefer
  * @version : V1.0
@@ -13,7 +15,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-public class ErrorResponse {
+public class ErrorResponse implements Serializable {
+    private static final long serialVersionUID = 1L;
     int status;
     String code;
     String message;

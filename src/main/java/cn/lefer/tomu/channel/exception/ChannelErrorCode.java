@@ -1,5 +1,7 @@
 package cn.lefer.tomu.channel.exception;
 
+import cn.lefer.tomu.base.exception.ErrorCode;
+
 /**
  * @author : lefer
  * @version : V1.0
@@ -7,11 +9,10 @@ package cn.lefer.tomu.channel.exception;
  * @Description : 频道类异常定义
  */
 
-public enum ChannelErrorCode {
+public enum ChannelErrorCode implements ErrorCode {
     CHANNEL_NOT_EXIST("4001", 400),
-    PLAYLIST_ITEM_ALREADY_EXIST("4090",409),
-    SONG_VERIFY_FAILED("4061",406),
-    SONG_CANNOT_REACHABLE("4060",406);
+    PLAYLIST_ITEM_ALREADY_EXIST("4090",409);
+
 
     private final String code;
     private final int status;
@@ -22,12 +23,19 @@ public enum ChannelErrorCode {
         this.status = status;
     }
 
+    @Override
     public String getCode() {
         return code;
     }
 
+    @Override
     public int getStatus() {
         return status;
+    }
+
+    @Override
+    public String getName() {
+        return this.name();
     }
 
     public static int getStatusByCode(String code) {

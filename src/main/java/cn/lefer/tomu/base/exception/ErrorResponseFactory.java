@@ -7,6 +7,7 @@ package cn.lefer.tomu.base.exception;
  * @Description :
  */
 public class ErrorResponseFactory {
+    private ErrorResponseFactory(){ }
     public static ErrorResponse generate(SystemErrorCode errorCode){
         return ErrorResponse.builder().code(errorCode.getCode())
                 .message(errorCode.name())

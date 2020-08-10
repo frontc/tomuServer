@@ -27,7 +27,7 @@ public class TomuSchedule {
     private SongMapper songMapper;
     private final AudienceOnlineService audienceOnlineService;
     private final ChannelEventService channelEventService;
-    private final static List<SongStatus> DEFAULT_SONG_STATUS_LIST = Arrays.asList(SongStatus.NORMAL, SongStatus.OUTDATE);
+    private static final List<SongStatus> DEFAULT_SONG_STATUS_LIST = Arrays.asList(SongStatus.NORMAL, SongStatus.OUTDATE);
 
     @Autowired
     public TomuSchedule(
@@ -43,10 +43,10 @@ public class TomuSchedule {
         log.info("开始刷新歌曲状态...");
         List<Song> songs = songMapper.selectAll(DEFAULT_SONG_STATUS_LIST);
         Map<SongStatus, List<Integer>> songStatusSongMap = songs.parallelStream().map(this::updateSongStatus).collect(Collectors.groupingBy(Song::getSongStatus, Collectors.mapping(Song::getSongID, toList())));
-        for (SongStatus songStatus : songStatusSongMap.keySet()) {
-            int rows = songMapper.batchUpdateSongStatus(songStatus, songStatusSongMap.get(songStatus));
-            log.info("歌曲状态刷新：" + songStatus + "-" + rows + "行.");
-        }
+        songStatusSongMap.forEach((key, value) -> {
+            int rows = songMapper.batchUpdateSongStatus(key, value);
+            log.info("歌曲状态刷新：" + key + "-" + rows + "行.");
+        });
         log.info("刷新歌曲状态结束.");
     }
 

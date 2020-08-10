@@ -7,7 +7,7 @@ package cn.lefer.tomu.base.exception;
  * @Description : 频道类异常定义
  */
 
-public enum SystemErrorCode {
+public enum SystemErrorCode implements ErrorCode{
     PATH_VARIABLE_TYPE_MISMATCH("4221",422),
     INVALID_PARAMETER("4220",422),
     URL_NOT_EXIST("4040",404),
@@ -24,12 +24,19 @@ public enum SystemErrorCode {
         this.status = status;
     }
 
+    @Override
     public String getCode() {
         return code;
     }
 
+    @Override
     public int getStatus() {
         return status;
+    }
+
+    @Override
+    public String getName() {
+        return this.name();
     }
 
     public static int getStatusByCode(String code) {

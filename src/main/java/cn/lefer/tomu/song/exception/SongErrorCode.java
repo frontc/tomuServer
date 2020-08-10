@@ -1,5 +1,7 @@
 package cn.lefer.tomu.song.exception;
 
+import cn.lefer.tomu.base.exception.ErrorCode;
+
 /**
  * @author : lefer
  * @version : V1.0
@@ -7,7 +9,7 @@ package cn.lefer.tomu.song.exception;
  * @Description : 频道类异常定义
  */
 
-public enum SongErrorCode {
+public enum SongErrorCode implements ErrorCode {
     SONG_VERIFY_FAILED("4061",406),
     SONG_CANNOT_REACHABLE("4060",406);
 
@@ -20,12 +22,19 @@ public enum SongErrorCode {
         this.status = status;
     }
 
+    @Override
     public String getCode() {
         return code;
     }
 
+    @Override
     public int getStatus() {
         return status;
+    }
+
+    @Override
+    public String getName() {
+        return this.name();
     }
 
     public static int getStatusByCode(String code) {
