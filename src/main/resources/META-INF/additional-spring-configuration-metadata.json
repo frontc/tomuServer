@@ -44,5 +44,15 @@
       "name": "tomu.channel.silence.time",
       "type": "java.lang.String",
       "description": "Description for tomu.channel.silence.time."
+    },
+    {
+      "name": "tomu.queue.buffer.size",
+      "type": "java.lang.Integer",
+      "description": "Description for tomu.queue.buffer.size."
+    },
+    {
+      "name": "tomu.sse.interval",
+      "type": "java.lang.Integer",
+      "description": "Description for tomu.sse.interval."
     }
   ] }

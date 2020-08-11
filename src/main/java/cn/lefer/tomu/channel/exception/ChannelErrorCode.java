@@ -1,6 +1,7 @@
 package cn.lefer.tomu.channel.exception;
 
 import cn.lefer.tomu.base.exception.ErrorCode;
+import org.springframework.http.HttpStatus;
 
 /**
  * @author : lefer
@@ -44,6 +45,6 @@ public enum ChannelErrorCode implements ErrorCode {
                 return enums.getStatus();
             }
         }
-        return 400;
+        return HttpStatus.BAD_REQUEST.value();
     }
 }

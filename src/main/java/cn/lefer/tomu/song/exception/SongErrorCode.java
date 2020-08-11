@@ -1,6 +1,7 @@
 package cn.lefer.tomu.song.exception;
 
 import cn.lefer.tomu.base.exception.ErrorCode;
+import org.springframework.http.HttpStatus;
 
 /**
  * @author : lefer
@@ -43,6 +44,6 @@ public enum SongErrorCode implements ErrorCode {
                 return enums.getStatus();
             }
         }
-        return 400;
+        return HttpStatus.BAD_REQUEST.value();
     }
 }

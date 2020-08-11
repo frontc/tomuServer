@@ -12,6 +12,7 @@ import cn.lefer.tomu.channel.event.ChannelEventService;
 import cn.lefer.tomu.channel.event.detail.AbstractChannelEventDetail;
 import cn.lefer.tomu.channel.representation.*;
 import cn.lefer.tomu.song.SongApplicationService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.http.codec.ServerSentEvent;
 import org.springframework.validation.annotation.Validated;
@@ -39,6 +40,8 @@ public class ChannelController {
     private AudienceOnlineService audienceOnlineService;
     @Resource
     private ChannelEventService channelEventService;
+    @Value("${tomu.sse.interval}")
+    private int SSE_INTERVAL;
 
     /**
      * Create a channel
@@ -131,7 +134,7 @@ public class ChannelController {
     @GetMapping(value = "/{channelID:^[1-9]\\d*$}/event", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<ServerSentEvent<ChannelEvent<? extends AbstractChannelEventDetail>>> broadcastChannelStatus(@PathVariable("channelID") @Validated int channelID,
                                                                                                             @RequestParam @Validated String clientID) {
-        return Flux.interval(Duration.ofMillis(100))
+        return Flux.interval(Duration.ofMillis(SSE_INTERVAL))
                 .filter(seq -> channelApplicationService.hasNews(clientID))
                 .map(seq -> channelApplicationService.getNews(channelID, clientID, Long.toString(seq)));
     }

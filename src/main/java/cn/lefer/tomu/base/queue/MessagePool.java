@@ -6,6 +6,7 @@ import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.Executors;
@@ -19,6 +20,8 @@ import java.util.concurrent.Executors;
 @Component
 public class MessagePool {
     private final MessageProducer messageProducer;
+    @Value("${tomu.queue.buffer.size}")
+    private final int BUFFER_SIZE = 2048;
 
     public MessagePool() {
         Log logger = LogFactory.getLog(this.getClass());
@@ -26,10 +29,9 @@ public class MessagePool {
         logger.info("开始初始化生产者...");
         MessageFactory factory = new MessageFactory();
         // 指明RingBuffer的大小，必须为2的幂
-        int bufferSize = 1024 * 2;
         Disruptor<MessageEvent> disruptor =
                 new Disruptor<>(factory,
-                        bufferSize, Executors.defaultThreadFactory(),
+                        BUFFER_SIZE, Executors.defaultThreadFactory(),
                         ProducerType.SINGLE,
                         new BlockingWaitStrategy());
         // 置入处理逻辑

@@ -1,5 +1,7 @@
 package cn.lefer.tomu.base.exception;
 
+import org.springframework.http.HttpStatus;
+
 /**
  * @author : lefer
  * @version : V1.0
@@ -45,6 +47,6 @@ public enum SystemErrorCode implements ErrorCode{
                 return enums.getStatus();
             }
         }
-        return 400;
+        return HttpStatus.BAD_REQUEST.value();
     }
 }

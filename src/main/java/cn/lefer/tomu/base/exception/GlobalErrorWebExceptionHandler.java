@@ -6,6 +6,7 @@ import org.springframework.boot.web.error.ErrorAttributeOptions;
 import org.springframework.boot.web.reactive.error.ErrorAttributes;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.codec.ServerCodecConfigurer;
 import org.springframework.stereotype.Component;
@@ -60,7 +61,7 @@ public class GlobalErrorWebExceptionHandler extends AbstractErrorWebExceptionHan
         String message = Optional.ofNullable(errorPropertiesMap.get("message")).map(Object::toString).orElse("");
         if (throwable instanceof BaseException) return ((BaseException) throwable).getErrorResponse();
         int status = (int) errorPropertiesMap.get("status");
-        if (status == 404) return ErrorResponseFactory.generate(SystemErrorCode.URL_NOT_EXIST);
+        if (status == HttpStatus.NOT_FOUND.value()) return ErrorResponseFactory.generate(SystemErrorCode.URL_NOT_EXIST);
         if (throwable instanceof NumberFormatException)
             return ErrorResponseFactory.generate(SystemErrorCode.PATH_VARIABLE_TYPE_MISMATCH);
         if (throwable instanceof WebExchangeBindException) {

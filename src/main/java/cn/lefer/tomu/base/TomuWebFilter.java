@@ -36,10 +36,7 @@ public class TomuWebFilter implements WebFilter {
         ServerHttpRequest request = serverWebExchange.getRequest();
         String path = request.getPath().value();
         //免鉴权URL
-        if ((HttpMethod.GET.equals(request.getMethod()) && path.contains("event"))
-                || path.contains("version")
-                || path.contains("auth")
-                || path.contains("who")) {
+        if (HttpMethod.GET.equals(request.getMethod()) && path.matches(".*(event|version|auth|who).*")) {
             return webFilterChain.filter(serverWebExchange);
         }
         log.debug(request.getId() + " - " + path);
