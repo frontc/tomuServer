@@ -13,4 +13,8 @@ public class SongRepresentationRepository {
     public List<SongRepresentation> getRandomSongs(int size) {
         return songRepresentationMapper.querySomeNormalSongsByRandom(size, SongStatus.NORMAL);
     }
+
+    public SongRepresentation byID(String songID) {
+        return songRepresentationMapper.byID(songID);
+    }
 }

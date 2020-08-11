@@ -1,6 +1,7 @@
 package cn.lefer.tomu.channel;
 
 import cn.lefer.tomu.base.constant.PlayAction;
+import cn.lefer.tomu.base.constant.PlaylistItemStatus;
 import cn.lefer.tomu.channel.event.ChannelEvent;
 import cn.lefer.tomu.channel.event.ChannelEventService;
 import cn.lefer.tomu.channel.event.ChannelEventType;
@@ -51,7 +52,7 @@ public class ChannelApplicationService {
     }
 
     public void deletePlaylistItem(int channelID, int songID) {
-        Optional<PlaylistItem> playlistItem = Optional.ofNullable(playlistItemRepository.byChannelIDAndSongID(channelID, songID));
+        Optional<PlaylistItem> playlistItem = Optional.ofNullable(playlistItemRepository.byChannelIDAndSongID(channelID, songID, PlaylistItemStatus.NORMAL));
         playlistItem.ifPresent(playlistItemRepository::delete);
         log.info("Delete PlaylistItem:" + playlistItem.map(PlaylistItem::getPlaylistItemID).orElse(0L) + " (Song: " + songID + " Channel: " + channelID + ")");
     }

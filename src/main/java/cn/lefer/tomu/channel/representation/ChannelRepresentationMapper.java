@@ -5,6 +5,7 @@ import cn.lefer.tomu.base.constant.SongStatus;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -29,4 +30,6 @@ public interface ChannelRepresentationMapper {
     List<PlayHistoryItemRepresentation> queryPlayHistoryByChannelIDAndPageNumAndPageSize(@Param("channelID") int channelID,
                                                                                          @Param("pageNum") int pageNum,
                                                                                          @Param("pageSize") int pageSize);
+
+    Date queryChannelCreateDateByChannelID(int channelID);
 }

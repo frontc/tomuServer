@@ -18,7 +18,9 @@ public interface PlaylistItemMapper {
                                                               @Param("songID") int songID,
                                                               @Param("playlistItemStatus") PlaylistItemStatus playlistItemStatus);
 
-    PlaylistItem byChannelIDAndSongID(@Param("channelID") int channelID, @Param("songID") int songID);
+    PlaylistItem byChannelIDAndSongID(@Param("channelID") int channelID,
+                                      @Param("songID") int songID,
+                                      @Param("playlistItemStatus") PlaylistItemStatus playlistItemStatus);
 
     void updateStatusByID(@Param("playlistItemID") long playlistItemID, @Param("playlistItemStatus") PlaylistItemStatus playlistItemStatus);
 }

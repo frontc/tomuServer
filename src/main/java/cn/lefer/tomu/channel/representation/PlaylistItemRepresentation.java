@@ -1,5 +1,6 @@
 package cn.lefer.tomu.channel.representation;
 
+import cn.lefer.tomu.base.constant.SongSource;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,6 +23,7 @@ public class PlaylistItemRepresentation {
     long playlistItemID;
     int channelID;
     int songID;
+    SongSource songSource;
     String songUrl;
     String songName;
     String artistName;

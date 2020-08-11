@@ -6,9 +6,12 @@ import cn.lefer.tomu.base.constant.GraceDateClassification;
 import cn.lefer.tomu.base.constant.PlaylistItemStatus;
 import cn.lefer.tomu.base.constant.SongStatus;
 import cn.lefer.tomu.channel.exception.ChannelNotExistException;
+import cn.lefer.tools.Date.LeferDate;
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -40,5 +43,14 @@ public class ChannelRepresentationRepository {
         long total = channelRepresentationMapper.queryTotalNumOfPlayHistoryByChannelID(channelID);
         Page.Builder<PlayHistoryItemRepresentation> pageBuilder = new Page.Builder<>();
         return pageBuilder.data(playHistory).pageNum(pageNum).pageSize(pageSize).total(total).build();
+    }
+
+    public PlayHistorySummaryRepresentation getPlayHistorySummaryByChannelID(int channelID) {
+        long songs = channelRepresentationMapper.queryTotalNumOfPlayHistoryByChannelID(channelID);
+        long days = (LeferDate.today().getTime()- channelRepresentationMapper.queryChannelCreateDateByChannelID(channelID).getTime())/(1000*60*60*24)+1;
+        PlayHistorySummaryRepresentation playHistorySummaryRepresentation = new PlayHistorySummaryRepresentation();
+        playHistorySummaryRepresentation.setDays(days);
+        playHistorySummaryRepresentation.setSongs(songs);
+        return playHistorySummaryRepresentation;
     }
 }

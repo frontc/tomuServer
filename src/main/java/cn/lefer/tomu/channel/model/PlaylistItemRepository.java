@@ -12,8 +12,8 @@ public class PlaylistItemRepository {
     @Resource
     private PlaylistItemMapper playlistItemMapper;
 
-    public PlaylistItem byChannelIDAndSongID(int channelID,int songID){
-        return playlistItemMapper.byChannelIDAndSongID(channelID,songID);
+    public PlaylistItem byChannelIDAndSongID(int channelID,int songID,PlaylistItemStatus playlistItemStatus){
+        return playlistItemMapper.byChannelIDAndSongID(channelID,songID,playlistItemStatus);
     }
 
     public long save(PlaylistItem playlistItem) {

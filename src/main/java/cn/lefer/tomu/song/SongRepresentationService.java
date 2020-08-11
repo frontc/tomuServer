@@ -18,4 +18,8 @@ public class SongRepresentationService {
     public List<SongRepresentation> getRandomSongs() {
         return songRepresentationRepository.getRandomSongs(TOMU_RANDOM_SIZE);
     }
+
+    public SongRepresentation getSong(String songID) {
+        return songRepresentationRepository.byID(songID);
+    }
 }

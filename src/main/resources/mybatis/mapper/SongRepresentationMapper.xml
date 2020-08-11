@@ -3,6 +3,7 @@
 <mapper namespace="cn.lefer.tomu.song.SongRepresentationMapper">
     <resultMap id="SongRepresentationResultMap" type="cn.lefer.tomu.song.SongRepresentation">
         <id column="song_id" jdbcType="INTEGER" property="songID"/>
+        <result column="song_source" jdbcType="VARCHAR" property="songSource"/>
         <result column="song_name" jdbcType="VARCHAR" property="songName"/>
         <result column="artist_name" jdbcType="VARCHAR" property="artistName"/>
         <result column="song_url" jdbcType="VARCHAR" property="songUrl"/>
@@ -13,6 +14,7 @@
 
     <select id="querySomeNormalSongsByRandom" resultMap="SongRepresentationResultMap">
         select song_id,
+               SONG_SOURCE,
                song_name,
                artist_name,
                song_url,
@@ -23,5 +25,17 @@
         where SONG_STATUS = #{songStatus}
         order by random()
         limit #{size}
+    </select>
+    <select id="byID" resultMap="SongRepresentationResultMap">
+        select song_id,
+               SONG_SOURCE,
+               song_name,
+               artist_name,
+               song_url,
+               mp3_url,
+               cover_url,
+               lrc_url
+        from T_SONG
+        where SONG_ID = #{songID}
     </select>
 </mapper>

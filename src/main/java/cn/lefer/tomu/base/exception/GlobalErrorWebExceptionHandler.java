@@ -14,6 +14,7 @@ import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.server.*;
 import reactor.core.publisher.Mono;
 
+import javax.validation.ConstraintViolationException;
 import java.util.Map;
 import java.util.Optional;
 
@@ -71,6 +72,13 @@ public class GlobalErrorWebExceptionHandler extends AbstractErrorWebExceptionHan
                         .replace("\"", "").trim();
                 errorResponse.setMessage(simpleMsg);
             }
+            return errorResponse;
+        }
+        if (throwable instanceof ConstraintViolationException) {
+            ErrorResponse errorResponse = ErrorResponseFactory.generate(SystemErrorCode.INVALID_PARAMETER);
+            String[] stringList = message.split(":");
+            String simpleMsg = stringList[stringList.length - 1].trim();
+            errorResponse.setMessage(simpleMsg);
             return errorResponse;
         }
         return ErrorResponse.builder().code("-1").message(message).status(status).build();

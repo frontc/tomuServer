@@ -36,15 +36,18 @@ public class TomuWebFilter implements WebFilter {
         ServerHttpRequest request = serverWebExchange.getRequest();
         String path = request.getPath().value();
         log.debug(request.getId() + " - " + path);
-        //特殊处理SSE接口
-        if (HttpMethod.GET.equals(request.getMethod()) && path.contains("event")) {
+        //免鉴权URL
+        if ((HttpMethod.GET.equals(request.getMethod()) && path.contains("event"))
+                || path.contains("version")
+                || path.contains("auth")
+                || path.contains("who")) {
             return webFilterChain.filter(serverWebExchange);
         }
+        //token校验
+        String token = TomuUtils.getToken(serverWebExchange);
+        if (token == null) throw new NoTokenException();
+        if (!LeferJwt.isValid(token, TOKEN_KEY)) throw new InvalidTokenException();
         if (path.contains("channel")) {
-            //token校验
-            String token = TomuUtils.getToken(serverWebExchange);
-            if (token == null) throw new NoTokenException();
-            if (!LeferJwt.isValid(token, TOKEN_KEY)) throw new InvalidTokenException();
             //获取本次请求的ChannelID
             int channelID = getChannelID(path.split("/"));
             //记录访客的频道

@@ -10,10 +10,7 @@ import cn.lefer.tomu.channel.command.GetPlayHistoryCommand;
 import cn.lefer.tomu.channel.event.ChannelEvent;
 import cn.lefer.tomu.channel.event.ChannelEventService;
 import cn.lefer.tomu.channel.event.detail.AbstractChannelEventDetail;
-import cn.lefer.tomu.channel.representation.ChannelRepresentation;
-import cn.lefer.tomu.channel.representation.ChannelRepresentationService;
-import cn.lefer.tomu.channel.representation.PlayHistoryItemRepresentation;
-import cn.lefer.tomu.channel.representation.PlaylistItemRepresentation;
+import cn.lefer.tomu.channel.representation.*;
 import cn.lefer.tomu.song.SongApplicationService;
 import org.springframework.http.MediaType;
 import org.springframework.http.codec.ServerSentEvent;
@@ -24,10 +21,12 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import javax.annotation.Resource;
+import javax.validation.constraints.Min;
 import java.time.Duration;
 import java.util.List;
 
 @RestController
+@Validated
 @RequestMapping(value = "/api/v1/channel")
 public class ChannelController {
     @Resource
@@ -140,14 +139,22 @@ public class ChannelController {
     /**
      * get channel's play history
      *
-     * @param getPlayHistoryCommand page size and page number;
+     * @param pageNum page number;
+     * @param pageSize page size;
      * @return Page<PlayHistoryItemRepresentation>
      */
-    @GetMapping(value = "/{channelID:^[1-9]\\d*$}/playHistory", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    @GetMapping(value = "/{channelID:^[1-9]\\d*$}/playHistory")
     public Mono<Page<PlayHistoryItemRepresentation>> getPlayHistoryInChannel(@PathVariable int channelID,
-                                                                             @Validated GetPlayHistoryCommand getPlayHistoryCommand) {
-        return Mono.just(channelRepresentationService.getPlayHistory(channelID, getPlayHistoryCommand.getPageNum(), getPlayHistoryCommand.getPageSize()));
+                                                                             @RequestParam  @Min(value = 1,message = "pageNum must bigger then 1") int pageNum,
+                                                                             @RequestParam  @Min(value = 1,message = "pageSize must bigger then 1") int pageSize) {
+        return Mono.just(channelRepresentationService.getPlayHistory(channelID, pageNum, pageSize));
     }
+
+    @GetMapping(value = "/{channelID:^[1-9]\\d*$}/playHistory/summary")
+    public Mono<PlayHistorySummaryRepresentation> getPlayHistorySummaryInChannel(@PathVariable int channelID){
+        return Mono.just(channelRepresentationService.getPlayHistorySummary(channelID));
+    }
+
 
     /**
      * get channel's audience
@@ -165,7 +172,7 @@ public class ChannelController {
     @DeleteMapping(value = "/{channelID:^[1-9]\\d*$}/audience")
     public void audienceExitFromChannel(@PathVariable("channelID") @Validated int channelID, ServerWebExchange exchange) {
         audienceOnlineService.exit(channelID, TomuUtils.getToken(exchange));
-        channelEventService.publishAudienceOutEvent(channelID, TomuUtils.getToken(exchange));
+        channelEventService.publishAudienceExitEvent(channelID, TomuUtils.getToken(exchange));
     }
 
     /**
@@ -173,8 +180,9 @@ public class ChannelController {
      */
     @DeleteMapping(value = "/{channelID:^[1-9]\\d*$}/audience/{nickName}")
     public void kickOthers(@PathVariable("channelID") @Validated int channelID,
-                           @PathVariable("nickName") String nickName) {
-        audienceOnlineService.getAudienceWithFullNameByNickname(channelID, nickName).ifPresent(token -> channelEventService.publishAudienceOutEvent(channelID, token));
-        audienceOnlineService.kick(channelID, nickName);
+                           @PathVariable("nickName") String nickName,
+                           ServerWebExchange exchange) {
+        // A,B: A 请 B 离开，B接收到A请其离开的事件，并执行exit操作
+        audienceOnlineService.getAudienceWithFullNameByNickname(channelID, nickName).ifPresent(token -> channelEventService.publishAudienceKickEvent(channelID, TomuUtils.getToken(exchange),token));
     }
 }

@@ -23,6 +23,7 @@
         from T_PLAYLIST
         where CHANNEL_ID = #{channelID}
           and SONG_ID = #{songID}
+          and PLAYLIST_ITEM_STATUS = #{playlistItemStatus}
         limit 1
     </select>
 

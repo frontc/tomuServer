@@ -36,4 +36,8 @@ public class ChannelRepresentationService {
     public Page<PlayHistoryItemRepresentation> getPlayHistory(int channelID, int pageNum, int pageSize) {
         return representationRepository.getPlayHistoryByChannelID(channelID,pageNum,pageSize);
     }
+
+    public PlayHistorySummaryRepresentation getPlayHistorySummary(int channelID) {
+        return representationRepository.getPlayHistorySummaryByChannelID(channelID);
+    }
 }

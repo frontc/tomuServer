@@ -84,13 +84,13 @@ public class ChannelEventService {
     }
 
     /*发布观众退出频道事件*/
-    public void publishAudienceOutEvent(int channelID, String token) {
+    public void publishAudienceExitEvent(int channelID, String token) {
         ExitChannelEventDetail detail = new ExitChannelEventDetail();
         detail.setDate(LeferDate.today());
         detail.setChannelID(channelID);
         detail.setNickName(TomuUtils.getNickname(token));
         ChannelEvent.Builder<ExitChannelEventDetail> builder = new ChannelEvent.Builder<>();
-        broadcast(channelID, token, builder.withType(ChannelEventType.AUDIENCE_OUT).withDetail(detail).build());
+        broadcast(channelID, token, builder.withType(ChannelEventType.AUDIENCE_EXIT).withDetail(detail).build());
     }
 
     /*发布歌单添加歌曲事件*/
@@ -113,5 +113,15 @@ public class ChannelEventService {
         detail.setDate(LeferDate.today());
         ChannelEvent.Builder<DeleteSongEventDetail> builder = new ChannelEvent.Builder<>();
         broadcast(channelID, token, builder.withType(ChannelEventType.DELETE_SONG).withDetail(detail).build());
+    }
+
+    /*发布频道踢人事件*/
+    public void publishAudienceKickEvent(int channelID, String master, String slave) {
+        OutChannelEventDetail detail = new OutChannelEventDetail();
+        detail.setPoorAudience(slave);
+        detail.setChannelID(channelID);
+        detail.setDate(LeferDate.today());
+        ChannelEvent.Builder<OutChannelEventDetail> builder = new ChannelEvent.Builder<>();
+        broadcast(channelID, master, builder.withType(ChannelEventType.KICK_AUDIENCE).withDetail(detail).build());
     }
 }
