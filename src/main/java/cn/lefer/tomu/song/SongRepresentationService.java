@@ -19,7 +19,7 @@ public class SongRepresentationService {
         return songRepresentationRepository.getRandomSongs(TOMU_RANDOM_SIZE);
     }
 
-    public SongRepresentation getSong(String songID) {
+    public SongRepresentation getSong(int songID) {
         return songRepresentationRepository.byID(songID);
     }
 }

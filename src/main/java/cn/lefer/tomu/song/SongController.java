@@ -29,7 +29,7 @@ public class SongController {
     }
 
     @GetMapping(value = "/{songID:^[1-9]\\d*$}")
-    public Mono<SongRepresentation> getSong(@PathVariable String songID){
+    public Mono<SongRepresentation> getSong(@PathVariable int songID){
         return Mono.just(representationService.getSong(songID));
     }
 }

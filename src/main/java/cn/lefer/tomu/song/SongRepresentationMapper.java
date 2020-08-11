@@ -10,5 +10,5 @@ import java.util.List;
 public interface SongRepresentationMapper {
     List<SongRepresentation> querySomeNormalSongsByRandom(@Param("size") int size, @Param("songStatus") SongStatus songStatus);
 
-    SongRepresentation byID(String songID);
+    SongRepresentation byID(int songID);
 }

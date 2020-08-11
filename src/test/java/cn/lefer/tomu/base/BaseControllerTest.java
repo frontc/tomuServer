@@ -25,7 +25,7 @@ class BaseControllerTest {
 
     @Test
     void getVersion() throws Exception {
-        client.get().uri("/api/v1/version").exchange().expectBody(String.class).isEqualTo(version);
+        client.get().uri("/api/v1/version").exchange().expectStatus().is2xxSuccessful().expectBody(String.class).isEqualTo(version);
     }
 
     @Test
@@ -35,6 +35,6 @@ class BaseControllerTest {
 
     @Test
     void who() {
-        client.get().uri("/api/v1/who").exchange().expectBody(String.class);
+        client.get().uri("/api/v1/who").exchange().expectStatus().is2xxSuccessful().expectBody(String.class);
     }
 }
