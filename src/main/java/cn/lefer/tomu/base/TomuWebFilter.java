@@ -35,7 +35,6 @@ public class TomuWebFilter implements WebFilter {
     public Mono<Void> filter(ServerWebExchange serverWebExchange, WebFilterChain webFilterChain) {
         ServerHttpRequest request = serverWebExchange.getRequest();
         String path = request.getPath().value();
-        log.debug(request.getId() + " - " + path);
         //免鉴权URL
         if ((HttpMethod.GET.equals(request.getMethod()) && path.contains("event"))
                 || path.contains("version")
@@ -43,6 +42,7 @@ public class TomuWebFilter implements WebFilter {
                 || path.contains("who")) {
             return webFilterChain.filter(serverWebExchange);
         }
+        log.debug(request.getId() + " - " + path);
         //token校验
         String token = TomuUtils.getToken(serverWebExchange);
         if (token == null) throw new NoTokenException();
