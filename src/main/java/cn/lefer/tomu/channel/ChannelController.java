@@ -183,6 +183,6 @@ public class ChannelController {
                            @PathVariable("nickName") String nickName,
                            ServerWebExchange exchange) {
         // A,B: A 请 B 离开，B接收到A请其离开的事件，并执行exit操作
-        audienceOnlineService.getAudienceWithFullNameByNickname(channelID, nickName).ifPresent(token -> channelEventService.publishAudienceKickEvent(channelID, TomuUtils.getToken(exchange),token));
+        audienceOnlineService.getAudienceWithFullNameByNickname(channelID, nickName).ifPresent(token -> channelEventService.publishAudienceKickEvent(channelID, TomuUtils.getToken(exchange),token.trim()));
     }
 }

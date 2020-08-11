@@ -10,7 +10,7 @@
     </parent>
     <groupId>cn.lefer</groupId>
     <artifactId>tomu-server</artifactId>
-    <version>0.1.2</version>
+    <version>0.1.3</version>
     <name>tomu-server</name>
     <description>refactor from tomu 0.0.23</description>
 
