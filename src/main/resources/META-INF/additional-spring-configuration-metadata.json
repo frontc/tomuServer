@@ -27,7 +27,7 @@
     },
     {
       "name": "tomu.token.ttMillis",
-      "type": "java.lang.String",
+      "type": "java.lang.Long",
       "description": "Description for tomu.token.ttMillis."
     },
     {
