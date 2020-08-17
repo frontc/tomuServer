@@ -1,16 +1,13 @@
 package cn.lefer.tomu.song;
 
-import cn.lefer.tomu.base.constant.SongSource;
+import static cn.lefer.tomu.base.constant.SongSource.netease;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
-
-import static cn.lefer.tomu.base.constant.SongSource.netease;
-import static cn.lefer.tomu.base.constant.SongSource.tencent;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional

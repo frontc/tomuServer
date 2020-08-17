@@ -14,7 +14,6 @@ import java.util.List;
 @ToString
 @Getter
 public class Page<T> {
-    private static final long serialVersionUID = 1L;
     private final int pageNum;
     private final int pageSize;
     private final int startRow;

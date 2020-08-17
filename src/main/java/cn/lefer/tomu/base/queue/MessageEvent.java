@@ -1,6 +1,5 @@
 package cn.lefer.tomu.base.queue;
 
-import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
 

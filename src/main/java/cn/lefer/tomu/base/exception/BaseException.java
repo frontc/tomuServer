@@ -1,7 +1,5 @@
 package cn.lefer.tomu.base.exception;
 
-import cn.lefer.tomu.channel.exception.ChannelErrorCode;
-import cn.lefer.tomu.song.exception.SongErrorCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,6 +12,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public abstract class BaseException extends RuntimeException {
+    private final static long serialVersionUID=1L;
     final ErrorResponse errorResponse;
 
     public BaseException(ErrorCode errorCode) {

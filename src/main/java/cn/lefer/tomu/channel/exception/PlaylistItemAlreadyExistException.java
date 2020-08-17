@@ -11,6 +11,11 @@ import static cn.lefer.tomu.channel.exception.ChannelErrorCode.PLAYLIST_ITEM_ALR
  * @Description : 频道不存在
  */
 public class PlaylistItemAlreadyExistException extends BaseException {
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
+
     public PlaylistItemAlreadyExistException() {
         super(PLAYLIST_ITEM_ALREADY_EXIST);
     }

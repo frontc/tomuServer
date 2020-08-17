@@ -1,30 +1,41 @@
 
 package cn.lefer.tomu.channel;
 
+import java.time.Duration;
+import java.util.List;
+
+import javax.annotation.Resource;
+import javax.validation.constraints.Min;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
+import org.springframework.http.codec.ServerSentEvent;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ServerWebExchange;
+
 import cn.lefer.tomu.base.AudienceOnlineService;
 import cn.lefer.tomu.base.Page;
 import cn.lefer.tomu.base.utils.TomuUtils;
 import cn.lefer.tomu.channel.command.AddSongCommand;
 import cn.lefer.tomu.channel.command.ChannelPlayStatusChangeCommand;
-import cn.lefer.tomu.channel.command.GetPlayHistoryCommand;
 import cn.lefer.tomu.channel.event.ChannelEvent;
 import cn.lefer.tomu.channel.event.ChannelEventService;
 import cn.lefer.tomu.channel.event.detail.AbstractChannelEventDetail;
-import cn.lefer.tomu.channel.representation.*;
+import cn.lefer.tomu.channel.representation.ChannelRepresentation;
+import cn.lefer.tomu.channel.representation.ChannelRepresentationService;
+import cn.lefer.tomu.channel.representation.PlayHistoryItemRepresentation;
+import cn.lefer.tomu.channel.representation.PlayHistorySummaryRepresentation;
+import cn.lefer.tomu.channel.representation.PlaylistItemRepresentation;
 import cn.lefer.tomu.song.SongApplicationService;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.MediaType;
-import org.springframework.http.codec.ServerSentEvent;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import javax.annotation.Resource;
-import javax.validation.constraints.Min;
-import java.time.Duration;
-import java.util.List;
 
 @RestController
 @Validated

@@ -11,6 +11,11 @@ import static cn.lefer.tomu.channel.exception.ChannelErrorCode.CHANNEL_NOT_EXIST
  * @Description : 频道不存在
  */
 public class ChannelNotExistException extends BaseException {
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
+
     public ChannelNotExistException() {
         super(CHANNEL_NOT_EXIST);
     }

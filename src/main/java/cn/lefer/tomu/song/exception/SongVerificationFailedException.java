@@ -11,6 +11,11 @@ import static cn.lefer.tomu.song.exception.SongErrorCode.SONG_VERIFY_FAILED;
  * @Description : 频道不存在
  */
 public class SongVerificationFailedException extends BaseException {
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
+
     public SongVerificationFailedException() {
         super(SONG_VERIFY_FAILED);
 

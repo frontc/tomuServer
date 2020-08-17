@@ -9,6 +9,11 @@ import cn.lefer.tomu.base.exception.BaseException;
  * @Description : 频道不存在
  */
 public class SongCannotReachableException extends BaseException {
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
+
     public SongCannotReachableException() {
         super(SongErrorCode.SONG_CANNOT_REACHABLE);
     }
